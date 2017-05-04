@@ -686,7 +686,9 @@ window.onload = function () {
 
                 if(gameIsOver){
                     clearInterval(movFig);
-                    console.log('game over');
+                    console.log(' game over ');
+                    // console.log(' game over ');
+
                 }else{
                     tetrisEngine.drawField();
 
@@ -710,6 +712,7 @@ window.onload = function () {
 
     // tetrisEngine.addFigureToCollection(figureJ);
 
+    // comentaryy napishy
 
      moweFigure();
 
