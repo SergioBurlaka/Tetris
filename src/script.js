@@ -677,8 +677,8 @@ window.onload = function () {
                 tetrisEngine.addFigureTofield();
                 tetrisEngine.checkFilledRow();
 
-                // console.log(tetrisEngine.getField());
-                // console.log('getField') ;
+                console.log(tetrisEngine.getField());
+                console.log('getField') ;
 
                 tetrisEngine.setFigureOnField();
 
