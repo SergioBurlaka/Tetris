@@ -450,15 +450,33 @@ window.onload = function () {
         };
 
 
+        //
+        // this.gameIsOver = function(){
+        //
+        //     var figureForCheck  = tetrisEngine.moveDown();
+        //     var hasNoCollision = tetrisEngine.moveCheck(figureForCheck);
+        //
+        //     var field = fieldClass.getField();
+        //
+        //     return !hasNoCollision || !!field[0][4];
+        //
+        // };
+
+
 
         this.gameIsOver = function(){
 
-            var figureForCheck  = tetrisEngine.moveDown();
-            var hasNoCollision = tetrisEngine.moveCheck(figureForCheck);
-
             var field = fieldClass.getField();
 
-            return !hasNoCollision || !!field[0][4];
+            for(var i=0; i < field[0].length; i++ ){
+
+                if(field[0][i] == 1 ){
+                    return true ;
+
+                }
+            }
+
+            return false;
 
         };
 
@@ -666,13 +684,11 @@ window.onload = function () {
 
     function moweFigure() {
 
-        var speed = 300;
+        var speed = 400;
 
-        tetrisEngine.setFigureOnField();
-        tetrisEngine.drawField();
+        var makeNewFigure = true;
 
-        var movFig = setInterval( moveFukingDown, speed);
-
+          var movFig = setInterval( moveFukingDown, speed);
 
         $(document).keydown(function(e) {
             switch (e.which) {
@@ -709,18 +725,27 @@ window.onload = function () {
 
         function moveFukingDown() {
 
+            if(makeNewFigure){
+                tetrisEngine.setFigureOnField();
+                tetrisEngine.drawField();
+            }
+
+
             var figureForCheckh  = tetrisEngine.moveDown();
             var hasNoCollision = tetrisEngine.moveCheck(figureForCheckh);
 
             if(hasNoCollision){
 
+                makeNewFigure = false;
                 tetrisEngine.drawField();
 
             }else{
 
+                makeNewFigure = true;
+
                 tetrisEngine.addFigureToField();
                 tetrisEngine.checkFilledRow();
-                tetrisEngine.setFigureOnField();
+                // tetrisEngine.drawField();
 
                 var gameIsOver = tetrisEngine.gameIsOver();
 
@@ -728,10 +753,8 @@ window.onload = function () {
                     clearInterval(movFig);
                     console.log(' game over ');
 
-                }else{
-                    tetrisEngine.drawField();
-
                 }
+
             }
         }
 
@@ -745,14 +768,22 @@ window.onload = function () {
     var tetrisEngine = new TetrisEngine();
 
 
-    // tetrisEngine.addFigureToCollection(figureLetterL,figureCube,figureLetterI,figureLetterT);
-    // tetrisEngine.addFigureToCollection(figureJ, figureS, figureZ);
+    tetrisEngine.addFigureToCollection(figureLetterL,figureCube,figureLetterI,figureLetterT);
+    tetrisEngine.addFigureToCollection(figureJ, figureS, figureZ);
 
 
-    tetrisEngine.addFigureToCollection(figureLetterT);
+    // tetrisEngine.addFigureToCollection(figureLetterT);
 
 
      moweFigure();
+
+
+
+
+
+
+
+
 
 
     //
