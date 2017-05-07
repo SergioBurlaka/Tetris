@@ -323,18 +323,8 @@ window.onload = function () {
         this.addFigureToField = function () {
 
             var figureCoordinate = figureClass.getSingleFigure();
+
             var fieldForAddFigure = fieldClass.getField();
-
-            var fieldForShow = fieldClass.getField().slice();
-
-            var clearRow = [0,0,0,0,0,0,0,0,0,0];
-
-            for(var k = -4; k < 0; k++){
-                fieldForShow[k] = clearRow;
-            }
-
-            console.log('fieldForShow');
-            console.log(fieldForShow);
 
 
             console.log('figureCoordinate');
@@ -343,6 +333,7 @@ window.onload = function () {
             console.log(figureCoordinate.coordinatesInField[1]);
             console.log(figureCoordinate.coordinatesInField[2]);
             console.log(figureCoordinate.coordinatesInField[3]);
+
 
 
             for (var i = 0; i < figureCoordinate.coordinatesInField.length; i++) {
@@ -355,17 +346,12 @@ window.onload = function () {
             }
 
 
+
             fieldClass.setField(fieldForAddFigure);
 
             console.log('fieldClass.getField()');
             console.log(fieldClass.getField());
 
-            // figureCoordinate = this.makeEmptyFigure();
-            //
-            // console.log(figureCoordinate);
-            // console.log('figureCoordinate');
-
-            // this.setFigure(figureCoordinate);
 
         };
 
@@ -684,7 +670,7 @@ window.onload = function () {
 
     function moweFigure() {
 
-        var speed = 400;
+        var speed = 100;
 
         var makeNewFigure = true;
 
@@ -697,19 +683,17 @@ window.onload = function () {
                     break;
 
                 case 39:
-                   tetrisEngine.moveRight();
+                    tetrisEngine.moveRight();
                     break;
 
                 case 32:
-                    tetrisEngine.rotate();
-                    break;
-
-                case 40:
-
+                    // tetrisEngine.rotate();
                     break;
 
             }
         });
+
+
 
         // $(document).keyup(function(e) {
         //     switch (e.which) {
@@ -724,6 +708,10 @@ window.onload = function () {
 
 
         function moveFukingDown() {
+
+
+            console.time('test');
+
 
             if(makeNewFigure){
                 tetrisEngine.setFigureOnField();
@@ -752,10 +740,12 @@ window.onload = function () {
                 if(gameIsOver){
                     clearInterval(movFig);
                     console.log(' game over ');
-
                 }
 
             }
+
+            console.timeEnd('test');
+
         }
 
 
@@ -768,11 +758,11 @@ window.onload = function () {
     var tetrisEngine = new TetrisEngine();
 
 
-    tetrisEngine.addFigureToCollection(figureLetterL,figureCube,figureLetterI,figureLetterT);
-    tetrisEngine.addFigureToCollection(figureJ, figureS, figureZ);
+    // tetrisEngine.addFigureToCollection(figureLetterL,figureCube,figureLetterI,figureLetterT);
+    // tetrisEngine.addFigureToCollection(figureJ, figureS, figureZ);
 
 
-    // tetrisEngine.addFigureToCollection(figureLetterT);
+    tetrisEngine.addFigureToCollection(figureCube);
 
 
      moweFigure();
