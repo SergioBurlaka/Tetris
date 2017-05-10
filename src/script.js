@@ -2,14 +2,6 @@
 
 window.onload = function () {
 
-    var figureS = {
-        relativeCoordinates: [
-            {x: 0, y: 0},
-            {x: -1, y: 0},
-            {x: 0, y: -1},
-            {x: 1, y: -1}
-        ]
-    };
 
     var figureZ = {
         relativeCoordinates: [
@@ -21,12 +13,13 @@ window.onload = function () {
     };
 
 
-    var figureJ = {
+
+    var figureS = {
         relativeCoordinates: [
             {x: 0, y: 0},
             {x: -1, y: 0},
             {x: 0, y: -1},
-            {x: 0, y: -2}
+            {x: 1, y: -1}
         ]
     };
 
@@ -45,28 +38,49 @@ window.onload = function () {
         relativeCoordinates: [
             {x: 0, y: 0},
             {x: 1, y: 0},
-            {x: 0, y: -1},
-            {x: -1, y: 0}
+            {x: -1, y: 0},
+            {x: 0, y: -1}
         ]
     };
+
+    // var figureLetterT = {
+    //     relativeCoordinates: [
+    //         {x: 0, y: 0},
+    //         {x: 1, y: 0},
+    //         {x: -1, y: 0},
+    //         {x: 0, y: -1}
+    //     ]
+    //
+    // };
+
 
     var figureLetterI = {
         relativeCoordinates: [
             {x: 0, y: 0},
+            {x: -1, y: 0},
+            {x: 1, y: 0},
+            {x: 2, y: 0}
+        ]
+    };
+
+    var figureJ = {
+        relativeCoordinates: [
+            {x: 0, y: 0},
             {x: 1, y: 0},
             {x: -1, y: 0},
-            {x: -2, y: 0}
+            {x: -1, y: -1}
         ]
     };
 
     var figureLetterL = {
         relativeCoordinates: [
             {x: 0, y: 0},
+            {x: -1, y: 0},
             {x: 1, y: 0},
-            {x: 0, y: -1},
-            {x: 0, y: -2}
+            {x: 1, y: -1}
         ]
     };
+
 
 
 
@@ -86,7 +100,7 @@ window.onload = function () {
             return arr;
         }
 
-        initialaseArrField( arrField );
+        initialaseArrField(arrField);
 
         this.setField = function (newField) {
             arrField = newField;
@@ -97,272 +111,28 @@ window.onload = function () {
         };
 
 
-    }
+
+        this.addFigureToField = function (figure) {
 
 
-    function Figure() {
+            for (var i = 0; i < figure.coordinatesInField.length; i++) {
 
+                var coordinateAddFigX =  figure.coordinatesInField[i].x;
+                var  coordinateAddFigY = figure.coordinatesInField[i].y;
 
-        var currentFigure;
-
-
-        // function makeEmptyFigure() {
-        //
-        //
-        //     var tempFigure = {
-        //         coordinatesInField: []
-        //     };
-        //
-        //     for (var k = 0; k < 4; k++) {
-        //
-        //         tempFigure.coordinatesInField[k] = {x: null, y: null};
-        //
-        //     }
-        //
-        //     return tempFigure;
-        // }
-        //
-        //
-        // makeEmptyFigure();
-
-
-
-
-        this.getSingleFigure = function () {
-            return currentFigure;
-        };
-
-        this.setFigure = function (figure) {
-            currentFigure = figure;
-        }
-
-
-    }
-
-
-
-
-    function TetrisEngine() {
-
-        // Figure.call(this);
-        // Field.call(this);
-
-        var figureClass = new Figure();
-
-        var fieldClass  = new Field();
-
-
-
-        var figureCollection = [];
-
-
-        var randomInteger = function (min, max) {
-            var rand = min - 0.5 + Math.random() * (max - min + 1);
-            rand = Math.round(rand);
-            return rand;
-        };
-
-
-        var figureInjector = function () {
-            var randomFigureNumber = randomInteger(0, figureCollection.length-1);
-            return figureCollection[randomFigureNumber];
-        };
-
-
-        this.addFigureToCollection = function () {
-            figureCollection.push.apply(figureCollection, arguments);
-        };
-
-
-
-
-        this.setFigureOnField = function () {
-
-            var figure = figureInjector();
-            var currentFigureOnField = {
-                coordinatesInField: []
-            };
-
-
-            for (var i = 0; i < figure.relativeCoordinates.length; i++) {
-
-                var coordinateX = 4,
-                    coordinateY = -1;
-
-                coordinateX = coordinateX + figure.relativeCoordinates[i].x;
-                coordinateY = coordinateY + figure.relativeCoordinates[i].y;
-
-                currentFigureOnField.coordinatesInField[i] = {x: coordinateX, y: coordinateY};
+                arrField[coordinateAddFigY][coordinateAddFigX] = 1;
 
             }
 
-
-            figureClass.setFigure(currentFigureOnField);
-
         };
-
-
-
-        var VECTOR_DOWN = {
-          x: 0,
-            y: 1
-        };
-
-        var VECTOR_LEFT = {
-            x: -1,
-            y: 0
-        };
-
-        var VECTOR_RIGHT = {
-            x: 1,
-            y: 0
-        };
-
-
-
-        this.move = function (vector) {
-
-            var  futureCoordinates = [];
-            var currentFigure = figureClass.getSingleFigure();
-
-            var increaseX = vector.x;
-            var increaseY = vector.y;
-
-            for (var i = 0; i < currentFigure.coordinatesInField.length; i++) {
-
-                var x = currentFigure.coordinatesInField[i].x;
-                var y = currentFigure.coordinatesInField[i].y;
-
-                futureCoordinates[i] = {x: increaseX + x, y: increaseY + y};
-
-            }
-            //
-            // console.log('///////');
-            // console.log(futureCoordinates[0]);
-            // console.log(futureCoordinates[1]);
-            // console.log(futureCoordinates[2]);
-            // console.log(futureCoordinates[3]);
-            // console.log(futureCoordinates[4]);
-            // console.log('///////');
-            //
-
-            return futureCoordinates;
-
-        };
-
-
-        this.rotate = function () {
-
-            var  futureCoordinates = [];
-
-            // var currentFigure = figureClass.getSingleFigure();
-
-            var currentFigure = this.copyFigure();
-
-            // console.log('currentFigure');
-            // console.log(currentFigure);
-
-
-
-            for (var i = 0; i < currentFigure.coordinatesInField.length; i++) {
-
-                var x = currentFigure.coordinatesInField[i].x;
-                var y = currentFigure.coordinatesInField[i].y;
-
-                var relativeCoordinatesX = x - currentFigure.coordinatesInField[0].x;
-                var relativeCoordinatesY  = y - currentFigure.coordinatesInField[0].y;
-
-                futureCoordinates[i] = {x: relativeCoordinatesX, y: relativeCoordinatesY};
-
-            }
-
-            var prepearForRotation = [];
-
-            for (var j = 0; j < futureCoordinates.length; j++) {
-
-                var rotationCoordinateX = futureCoordinates[j].x - futureCoordinates[2].x;
-                var rotationCoordinateY =  futureCoordinates[j].y - futureCoordinates[2].y;
-
-                prepearForRotation[j] = {x: rotationCoordinateX, y: rotationCoordinateY};
-
-
-            }
-
-            var rotatedCoordinate = [];
-
-            for (var k = 0; k < prepearForRotation.length; k++) {
-
-                var absoluteY =  prepearForRotation[k].x*(-1)+currentFigure.coordinatesInField[2].y;
-                var absoluteX =  prepearForRotation[k].y*1+currentFigure.coordinatesInField[2].x;
-
-                rotatedCoordinate[k] = {x: absoluteX, y: absoluteY};
-
-            }
-
-            // console.log('///rotate////');
-            // console.log(rotatedCoordinate[0]);
-            // console.log(rotatedCoordinate[1]);
-            // console.log(rotatedCoordinate[2]);
-            // console.log(rotatedCoordinate[3]);
-            // console.log(rotatedCoordinate[4]);
-            // console.log(rotatedCoordinate);
-            // console.log('///////');
-
-
-            var resultOfCheck = this.moveCheck(rotatedCoordinate);
-
-            if(resultOfCheck) {
-
-                this.drawField();
-
-            }
-
-
-        };
-
-        this.addFigureToField = function () {
-
-            var figureCoordinate = figureClass.getSingleFigure();
-
-            var fieldForAddFigure = fieldClass.getField();
-
-
-            console.log('figureCoordinate');
-            console.log(figureCoordinate);
-            console.log(figureCoordinate.coordinatesInField[0]);
-            console.log(figureCoordinate.coordinatesInField[1]);
-            console.log(figureCoordinate.coordinatesInField[2]);
-            console.log(figureCoordinate.coordinatesInField[3]);
-
-
-
-            for (var i = 0; i < figureCoordinate.coordinatesInField.length; i++) {
-
-                var coordinateAddFigX =  figureCoordinate.coordinatesInField[i].x;
-                var  coordinateAddFigY = figureCoordinate.coordinatesInField[i].y;
-
-                fieldForAddFigure[coordinateAddFigY][coordinateAddFigX] = 1;
-
-            }
-
-
-
-            fieldClass.setField(fieldForAddFigure);
-
-            console.log('fieldClass.getField()');
-            console.log(fieldClass.getField());
-
-
-        };
-
 
         this.checkFilledRow = function () {
 
-            var valuesArr = fieldClass.getField();
-            var removqlIndexes = this.getFilledRow(valuesArr);
+            var valuesArr = this.getField();
+            var removedlIndexes = this.getFilledRow(valuesArr);
 
-            if(removqlIndexes.length){
-                this.moveFieldDown(removqlIndexes);
+            if(removedlIndexes.length){
+                this.moveFieldDown(removedlIndexes);
             }
 
         };
@@ -398,7 +168,7 @@ window.onload = function () {
         this.moveFieldDown = function (removqlIndexes) {
 
 
-            var valuesArr = fieldClass.getField().slice();
+            var valuesArr = this.getField().slice();
             var clearRow = [0,0,0,0,0,0,0,0,0,0];
 
             var iterations = removqlIndexes.length;
@@ -431,153 +201,319 @@ window.onload = function () {
             }
 
 
-            fieldClass.setField(valuesArr);
+            this.setField(valuesArr);
 
         };
 
 
+
+
+    }
+
+
+    function Figure() {
+
+
+        var futureCoordinates = {
+            coordinatesInField: [
+                {x: null, y: null},
+                {x: null, y: null},
+                {x: null, y: null},
+                {x: null, y: null}
+            ]
+        };
+
+
+        var currentCoordinates = {
+            coordinatesInField: [
+                {x: null, y: null},
+                {x: null, y: null},
+                {x: null, y: null},
+                {x: null, y: null}
+            ]
+        };
+
+
+        this.getCurrentCoordinates = function () {
+            return currentCoordinates
+        };
+
+        this.getFutureCoordinates  = function () {
+            return futureCoordinates;
+        };
+
+
+        this.addFigureToModel = function (figure) {
+
+
+            for (var i = 0; i < figure.relativeCoordinates.length; i++) {
+
+                var coordinateX = 4,
+                    coordinateY = -1;
+
+                currentCoordinates.coordinatesInField[i].x = coordinateX + figure.relativeCoordinates[i].x;
+                currentCoordinates.coordinatesInField[i].y = coordinateY + figure.relativeCoordinates[i].y;
+
+            }
+
+        };
+
+
+
+
+        // this.rotate = function () {
         //
-        // this.gameIsOver = function(){
         //
-        //     var figureForCheck  = tetrisEngine.moveDown();
-        //     var hasNoCollision = tetrisEngine.moveCheck(figureForCheck);
+        //     var absoluteCoordinates = [];
         //
-        //     var field = fieldClass.getField();
+        //     for (var i = 0; i < currentCoordinates.coordinatesInField.length; i++) {
         //
-        //     return !hasNoCollision || !!field[0][4];
+        //         var x = currentCoordinates.coordinatesInField[i].x;
+        //         var y = currentCoordinates.coordinatesInField[i].y;
         //
+        //         var relativeCoordinatesX = x - currentCoordinates.coordinatesInField[0].x;
+        //         var relativeCoordinatesY  = y - currentCoordinates.coordinatesInField[0].y;
+        //
+        //         absoluteCoordinates[i] = {x: relativeCoordinatesX, y: relativeCoordinatesY};
+        //
+        //     }
+        //
+        //     var prepearForRotation = [];
+        //
+        //     for (var j = 0; j < absoluteCoordinates.length; j++) {
+        //
+        //         var rotationCoordinateX = absoluteCoordinates[j].x - absoluteCoordinates[2].x;
+        //         var rotationCoordinateY =  absoluteCoordinates[j].y - absoluteCoordinates[2].y;
+        //
+        //         prepearForRotation[j] = {x: rotationCoordinateX, y: rotationCoordinateY};
+        //
+        //
+        //     }
+        //
+        //     var rotatedCoordinate = [];
+        //
+        //     for (var k = 0; k < prepearForRotation.length; k++) {
+        //
+        //         var absoluteY =  prepearForRotation[k].x*(-1)+currentCoordinates.coordinatesInField[2].y;
+        //         var absoluteX =  prepearForRotation[k].y*1+currentCoordinates.coordinatesInField[2].x;
+        //
+        //         rotatedCoordinate[k] = {x: absoluteX, y: absoluteY};
+        //
+        //     }
+        //
+        //
+        //     this.saveToFutureCoordinates(rotatedCoordinate);
+        //
+        // };
+
+        this.rotate = function () {
+
+
+            var absoluteCoordinates = [];
+
+            for (var i = 0; i < currentCoordinates.coordinatesInField.length; i++) {
+
+                var x = currentCoordinates.coordinatesInField[i].x;
+                var y = currentCoordinates.coordinatesInField[i].y;
+
+                var relativeCoordinatesX = x - currentCoordinates.coordinatesInField[0].x;
+                var relativeCoordinatesY  = y - currentCoordinates.coordinatesInField[0].y;
+
+                absoluteCoordinates[i] = {x: relativeCoordinatesX, y: relativeCoordinatesY};
+
+            }
+
+
+            for (var k = 0; k < absoluteCoordinates.length; k++) {
+
+                var absoluteX =  absoluteCoordinates[k].y*1+currentCoordinates.coordinatesInField[0].x;
+                var absoluteY =  absoluteCoordinates[k].x*(-1)+currentCoordinates.coordinatesInField[0].y;
+
+
+                futureCoordinates.coordinatesInField[k].x = absoluteX;
+                futureCoordinates.coordinatesInField[k].y = absoluteY;
+
+            }
+
+
+
+        };
+
+
+        // this.saveToFutureCoordinates = function (figureArray) {
+        //
+        //     for (var i = 0; i < futureCoordinates.coordinatesInField.length; i++) {
+        //
+        //         futureCoordinates.coordinatesInField[i].x = figureArray[i].x;
+        //         futureCoordinates.coordinatesInField[i].y = figureArray[i].y;
+        //
+        //     }
         // };
 
 
 
-        this.gameIsOver = function(){
+        // this.makeEmptyFigure = function () {
+        //
+        //
+        //     var tempFigure = {
+        //         coordinatesInField: []
+        //     };
+        //
+        //     for (var k = 0; k < 4; k++) {
+        //
+        //         tempFigure.coordinatesInField[k] = {x: null, y: null};
+        //
+        //     }
+        //
+        //     return tempFigure;
+        // };
+        //
+        //
+        // this.copyFigure = function () {
+        //
+        //
+        //     var tempFigure = this.makeEmptyFigure();
+        //
+        //     for (var k = 0; k < 4; k++) {
+        //
+        //         tempFigure.coordinatesInField[k].x =  currentCoordinates.coordinatesInField[k].x;
+        //         tempFigure.coordinatesInField[k].y =  currentCoordinates.coordinatesInField[k].y;
+        //
+        //
+        //     }
+        //
+        //     return tempFigure;
+        // };
 
-            var field = fieldClass.getField();
 
-            for(var i=0; i < field[0].length; i++ ){
+        this.saveToCurrentCoordinates = function() {
 
-                if(field[0][i] == 1 ){
+
+            for (var k = 0; k < futureCoordinates.coordinatesInField.length; k++) {
+
+                currentCoordinates.coordinatesInField[k].x = futureCoordinates.coordinatesInField[k].x;
+                currentCoordinates.coordinatesInField[k].y = futureCoordinates.coordinatesInField[k].y;
+
+            }
+
+        };
+
+
+
+        this.move = function (vector) {
+
+            var increaseX = vector.x;
+            var increaseY = vector.y;
+
+            for (var i = 0; i < currentCoordinates.coordinatesInField.length; i++) {
+
+                var x = currentCoordinates.coordinatesInField[i].x;
+                var y = currentCoordinates.coordinatesInField[i].y;
+
+                futureCoordinates.coordinatesInField[i].x = increaseX + x;
+                futureCoordinates.coordinatesInField[i].y = increaseY + y;
+
+            }
+
+        };
+
+
+        var VECTOR_DOWN = {
+            x: 0,
+            y: 1
+        };
+
+        var VECTOR_LEFT = {
+            x: -1,
+            y: 0
+        };
+
+        var VECTOR_RIGHT = {
+            x: 1,
+            y: 0
+        };
+
+
+        this.moveLeft = function () {
+
+             this.move(VECTOR_LEFT);
+        };
+
+
+        this.moveRight = function () {
+
+             this.move(VECTOR_RIGHT);
+        };
+
+
+        this.moveDown = function () {
+
+             this.move(VECTOR_DOWN);
+        };
+
+
+    }
+
+
+
+    function FigureGenerator() {
+
+
+        var figureCollection = [];
+
+        var randomInteger = function (min, max) {
+            var rand = min - 0.5 + Math.random() * (max - min + 1);
+            rand = Math.round(rand);
+            return rand;
+        };
+
+
+        this.getFigure = function () {
+            var randomFigureNumber = randomInteger(0, figureCollection.length-1);
+            return figureCollection[randomFigureNumber];
+        };
+
+        this.addFigureToCollection = function(){
+
+            figureCollection.push.apply(figureCollection, arguments);
+        }
+
+    }
+
+
+
+
+    function TetrisEngine() {
+
+        this.gameIsOver  = function (arrField) {
+
+            for(var i=0; i < arrField[0].length; i++ ){
+
+                if(arrField[0][i] == 1 ){
                     return true ;
 
                 }
             }
 
             return false;
-
-        };
-
-
-
-        this.moveLeft = function () {
-
-            var coordinateFigure  = this.move(VECTOR_LEFT);
-            var resultOfCheck = this.moveCheck(coordinateFigure);
-
-            if(resultOfCheck){
-                this.drawField();
-            }
-
-        };
-
-
-
-        this.moveRight = function () {
-
-            var coordinateFigure = this.move(VECTOR_RIGHT);
-            var resultOfCheck = this.moveCheck(coordinateFigure);
-
-            if(resultOfCheck){
-                this.drawField();
-            }
-
-        };
-
-
-        this.moveDown = function () {
-
-            return this.move(VECTOR_DOWN);
-
-        };
-
-
-        this.copyFigure = function () {
-
-            var figureCoordinate = figureClass.getSingleFigure();
-
-            var tempFigure = this.makeEmptyFigure();
-
-            for (var k = 0; k < figureCoordinate.coordinatesInField.length; k++) {
-
-                tempFigure.coordinatesInField[k].x =  figureCoordinate.coordinatesInField[k].x;
-                tempFigure.coordinatesInField[k].y =  figureCoordinate.coordinatesInField[k].y;
-
-
-            }
-
-            return tempFigure;
-        };
-
-
-        this.makeEmptyFigure = function () {
-
-            var figureCoordinate = figureClass.getSingleFigure();
-
-            var tempFigure = {
-                coordinatesInField: []
-            };
-
-            for (var k = 0; k < figureCoordinate.coordinatesInField.length; k++) {
-
-                tempFigure.coordinatesInField[k] = {x: null, y: null};
-
-            }
-
-            return tempFigure;
-        };
-
-
-         this.saveCoordinatesToFigure = function(checkedFigure) {
-
-
-            var tempFigure = this.makeEmptyFigure();
-
-            for (var k = 0; k < checkedFigure.length; k++) {
-
-                tempFigure.coordinatesInField[k].x = checkedFigure[k].x;
-                tempFigure.coordinatesInField[k].y = checkedFigure[k].y;
-
-            }
-
-             figureClass.setFigure(tempFigure);
-
         };
 
 
 
 
-        this.moveCheck = function (figureCoordinates) {
-
-
-            var field = fieldClass.getField();
-
-            // console.log('////moveCheck///');
-            // console.log(figureCoordinates[0]);
-            // console.log(figureCoordinates[1]);
-            // console.log(figureCoordinates[2]);
-            // console.log(figureCoordinates[3]);
-            // console.log(figureCoordinates[4]);
-            // console.log('///////');
+        this.moveCheck = function (figureCoordinates, field) {
 
             var minCoordinateX = 0;
             var maxCoordinateX = field[0].length;
             var maxCoordinateY = field.length;
 
+
             var counter;
 
-            for(var j = 0; j < figureCoordinates.length; j++ ){
+            for(var j = 0; j < figureCoordinates.coordinatesInField.length; j++ ){
 
-                var coordinateX = figureCoordinates[j].x;
-                var coordinateY = figureCoordinates[j].y;
+                var coordinateX = figureCoordinates.coordinatesInField[j].x;
+                var coordinateY = figureCoordinates.coordinatesInField[j].y;
 
                 if( coordinateY < maxCoordinateY &&
                     coordinateX < maxCoordinateX &&
@@ -593,8 +529,6 @@ window.onload = function () {
             }
 
 
-            this.saveCoordinatesToFigure(figureCoordinates);
-
             return counter
 
         };
@@ -602,12 +536,7 @@ window.onload = function () {
         var paper  = Raphael(20, 20, 350, 700);
 
 
-
-        this.drawField  = function () {
-
-
-            var figure = figureClass.getSingleFigure();
-            var tetrisField = fieldClass.getField();
+        this.drawField  = function (figure, tetrisField) {
 
 
             paper.clear();
@@ -645,7 +574,6 @@ window.onload = function () {
 
 
 
-
             var innerFigureCoordinates = figure.coordinatesInField;
 
             for (var k = 0; k < innerFigureCoordinates.length; k++) {
@@ -666,11 +594,29 @@ window.onload = function () {
 
 
 
+    var tetrisEngine = new TetrisEngine();
+    var generator = new FigureGenerator();
+    var fieldClass  = new Field();
+    var figureClass = new Figure();
+
+
+
+    generator.addFigureToCollection(figureLetterL,figureCube,figureLetterI,figureLetterT);
+    generator.addFigureToCollection(figureJ, figureS, figureZ);
+
+
+
+    // generator.addFigureToCollection(figureLetterT);
+
+
+    moweFigure();
+
+
 
 
     function moweFigure() {
 
-        var speed = 100;
+        var speed = 250;
 
         var makeNewFigure = true;
 
@@ -679,15 +625,61 @@ window.onload = function () {
         $(document).keydown(function(e) {
             switch (e.which) {
                 case 37:
-                    tetrisEngine.moveLeft();
+                    figureClass.moveLeft();
+
+                    var futureFigureLeft = figureClass.getFutureCoordinates();
+                    var fieldLeft = fieldClass.getField();
+
+
+                    if(tetrisEngine.moveCheck(futureFigureLeft, fieldLeft)){
+                        figureClass.saveToCurrentCoordinates();
+                    }
+
+
+                    var figureMoveLeft = figureClass.getCurrentCoordinates();
+                    var fieldLeftWithFigure = fieldClass.getField();
+
+                    tetrisEngine.drawField(figureMoveLeft, fieldLeftWithFigure);
                     break;
 
                 case 39:
-                    tetrisEngine.moveRight();
+                    figureClass.moveRight();
+
+                    var futureFigure = figureClass.getFutureCoordinates();
+                    var field = fieldClass.getField();
+
+
+                    if(tetrisEngine.moveCheck(futureFigure,field)){
+                        figureClass.saveToCurrentCoordinates();
+                    }
+
+
+                    var figureMoveRight = figureClass.getCurrentCoordinates();
+                    var fieldRight = fieldClass.getField();
+
+
+                    tetrisEngine.drawField(figureMoveRight, fieldRight);
                     break;
 
                 case 32:
-                    // tetrisEngine.rotate();
+                    figureClass.rotate();
+
+                    var futureFigureRotation = figureClass.getFutureCoordinates();
+                    var fieldRotation = fieldClass.getField();
+
+
+                    if(tetrisEngine.moveCheck(futureFigureRotation,fieldRotation)){
+                        figureClass.saveToCurrentCoordinates();
+                    }
+
+
+                    var figureMoveRotate = figureClass.getCurrentCoordinates();
+                    var fieldRotate = fieldClass.getField();
+
+
+                    tetrisEngine.drawField(figureMoveRotate, fieldRotate);
+
+
                     break;
 
             }
@@ -710,68 +702,115 @@ window.onload = function () {
         function moveFukingDown() {
 
 
-            console.time('test');
-
-
             if(makeNewFigure){
-                tetrisEngine.setFigureOnField();
-                tetrisEngine.drawField();
+                var figure = generator.getFigure();
+                figureClass.addFigureToModel(figure);
             }
 
 
-            var figureForCheckh  = tetrisEngine.moveDown();
-            var hasNoCollision = tetrisEngine.moveCheck(figureForCheckh);
+            figureClass.moveDown();
 
-            if(hasNoCollision){
+
+            var futureFigure = figureClass.getFutureCoordinates();
+            var field = fieldClass.getField();
+
+
+            if(tetrisEngine.moveCheck(futureFigure,field)){
 
                 makeNewFigure = false;
-                tetrisEngine.drawField();
+
+                figureClass.saveToCurrentCoordinates();
+                tetrisEngine.drawField(futureFigure, field);
 
             }else{
-
                 makeNewFigure = true;
+                var addFigure = figureClass.getCurrentCoordinates();
+                fieldClass.addFigureToField(addFigure);
+                fieldClass.checkFilledRow();
 
-                tetrisEngine.addFigureToField();
-                tetrisEngine.checkFilledRow();
-                // tetrisEngine.drawField();
 
-                var gameIsOver = tetrisEngine.gameIsOver();
+                var fieldForCheck = fieldClass.getField();
+                var isGameOver = tetrisEngine.gameIsOver(fieldForCheck);
 
-                if(gameIsOver){
+                if(isGameOver){
                     clearInterval(movFig);
                     console.log(' game over ');
                 }
-
             }
 
-            console.timeEnd('test');
+            console.log('its work');
+
 
         }
 
-
-
     };
 
+    //
+    //     function moveFukingDown() {
+    //
+    //
+    //         console.time('test');
+    //
+    //
+    //         if(makeNewFigure){
+    //             tetrisEngine.setFigureOnField();
+    //             tetrisEngine.drawField();
+    //         }
+    //
+    //
+    //         var figureForCheckh  = tetrisEngine.moveDown();
+    //         var hasNoCollision = tetrisEngine.moveCheck(figureForCheckh);
+    //
+    //         if(hasNoCollision){
+    //
+    //             makeNewFigure = false;
+    //             tetrisEngine.drawField();
+    //
+    //         }else{
+    //
+    //             makeNewFigure = true;
+    //
+    //             tetrisEngine.addFigureToField();
+    //             tetrisEngine.checkFilledRow();
+    //             // tetrisEngine.drawField();
+    //
+    //             var gameIsOver = tetrisEngine.gameIsOver();
+    //
+    //             if(gameIsOver){
+    //                 clearInterval(movFig);
+    //                 console.log(' game over ');
+    //             }
+    //
+    //         }
+    //
+    //         console.timeEnd('test');
+    //
+    //     }
+    //
+    // };
 
 
 
-    var tetrisEngine = new TetrisEngine();
-
-
-    // tetrisEngine.addFigureToCollection(figureLetterL,figureCube,figureLetterI,figureLetterT);
-    // tetrisEngine.addFigureToCollection(figureJ, figureS, figureZ);
-
-
-    tetrisEngine.addFigureToCollection(figureCube);
-
-
-     moweFigure();
 
 
 
-
-
-
+        //
+        // var simpleFig  = {
+        //     coordinates :[
+        //         {x: 0, y: 0},
+        //         {x: -1, y: 0},
+        //         {x: 0, y: -1},
+        //         {x: 1, y: -1}
+        //     ]
+        // };
+        //
+        // function RecreateFigure(figure) {
+        //
+        //     this.makeAbsolute = function () {
+        //
+        //     }
+        //
+        // }
 
 
 
