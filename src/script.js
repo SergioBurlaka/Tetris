@@ -114,25 +114,34 @@ window.onload = function () {
 
         this.addFigureToField = function (figure) {
 
+            console.log('field_Before');
+            console.log(arrField.slice());
 
-            for (var i = 0; i < figure.coordinatesInField.length; i++) {
+            console.log('figure_Before');
+            console.log(figure.slice());
 
-                var coordinateAddFigX =  figure.coordinatesInField[i].x;
-                var  coordinateAddFigY = figure.coordinatesInField[i].y;
+
+            for (var i = 0; i < figure.length; i++) {
+
+                var coordinateAddFigX =  figure[i].x;
+                var  coordinateAddFigY = figure[i].y;
 
                 arrField[coordinateAddFigY][coordinateAddFigX] = 1;
 
             }
 
+            console.log('field_After');
+            console.log(arrField);
+
         };
 
-        this.checkFilledRow = function () {
+        this.removeFilledRows = function () {
 
             var valuesArr = this.getField();
-            var removedlIndexes = this.getFilledRow(valuesArr);
+            var removedIndexes = this.getFilledRow(valuesArr);
 
-            if(removedlIndexes.length){
-                this.moveFieldDown(removedlIndexes);
+            if(removedIndexes.length){
+                this.moveFieldDown(removedIndexes);
             }
 
         };
@@ -214,24 +223,22 @@ window.onload = function () {
     function Figure() {
 
 
-        var futureCoordinates = {
-            coordinatesInField: [
+        var futureCoordinates = [
+
                 {x: null, y: null},
                 {x: null, y: null},
                 {x: null, y: null},
                 {x: null, y: null}
-            ]
-        };
+            ];
 
 
-        var currentCoordinates = {
-            coordinatesInField: [
+        var currentCoordinates = [
+
                 {x: null, y: null},
                 {x: null, y: null},
                 {x: null, y: null},
                 {x: null, y: null}
-            ]
-        };
+            ];
 
 
         this.getCurrentCoordinates = function () {
@@ -251,8 +258,8 @@ window.onload = function () {
                 var coordinateX = 4,
                     coordinateY = -1;
 
-                currentCoordinates.coordinatesInField[i].x = coordinateX + figure.relativeCoordinates[i].x;
-                currentCoordinates.coordinatesInField[i].y = coordinateY + figure.relativeCoordinates[i].y;
+                currentCoordinates[i].x = coordinateX + figure.relativeCoordinates[i].x;
+                currentCoordinates[i].y = coordinateY + figure.relativeCoordinates[i].y;
 
             }
 
@@ -261,77 +268,36 @@ window.onload = function () {
 
 
 
-        // this.rotate = function () {
-        //
-        //
-        //     var absoluteCoordinates = [];
-        //
-        //     for (var i = 0; i < currentCoordinates.coordinatesInField.length; i++) {
-        //
-        //         var x = currentCoordinates.coordinatesInField[i].x;
-        //         var y = currentCoordinates.coordinatesInField[i].y;
-        //
-        //         var relativeCoordinatesX = x - currentCoordinates.coordinatesInField[0].x;
-        //         var relativeCoordinatesY  = y - currentCoordinates.coordinatesInField[0].y;
-        //
-        //         absoluteCoordinates[i] = {x: relativeCoordinatesX, y: relativeCoordinatesY};
-        //
-        //     }
-        //
-        //     var prepearForRotation = [];
-        //
-        //     for (var j = 0; j < absoluteCoordinates.length; j++) {
-        //
-        //         var rotationCoordinateX = absoluteCoordinates[j].x - absoluteCoordinates[2].x;
-        //         var rotationCoordinateY =  absoluteCoordinates[j].y - absoluteCoordinates[2].y;
-        //
-        //         prepearForRotation[j] = {x: rotationCoordinateX, y: rotationCoordinateY};
-        //
-        //
-        //     }
-        //
-        //     var rotatedCoordinate = [];
-        //
-        //     for (var k = 0; k < prepearForRotation.length; k++) {
-        //
-        //         var absoluteY =  prepearForRotation[k].x*(-1)+currentCoordinates.coordinatesInField[2].y;
-        //         var absoluteX =  prepearForRotation[k].y*1+currentCoordinates.coordinatesInField[2].x;
-        //
-        //         rotatedCoordinate[k] = {x: absoluteX, y: absoluteY};
-        //
-        //     }
-        //
-        //
-        //     this.saveToFutureCoordinates(rotatedCoordinate);
-        //
-        // };
-
         this.rotate = function () {
 
 
-            var absoluteCoordinates = [];
+            var absoluteCoordinates = [
 
-            for (var i = 0; i < currentCoordinates.coordinatesInField.length; i++) {
+                {x: null, y: null},
+                {x: null, y: null},
+                {x: null, y: null},
+                {x: null, y: null}
+            ];
 
-                var x = currentCoordinates.coordinatesInField[i].x;
-                var y = currentCoordinates.coordinatesInField[i].y;
+            for (var i = 0; i < currentCoordinates.length; i++) {
 
-                var relativeCoordinatesX = x - currentCoordinates.coordinatesInField[0].x;
-                var relativeCoordinatesY  = y - currentCoordinates.coordinatesInField[0].y;
+                var x = currentCoordinates[i].x;
+                var y = currentCoordinates[i].y;
 
-                absoluteCoordinates[i] = {x: relativeCoordinatesX, y: relativeCoordinatesY};
+                absoluteCoordinates[i].x = x - currentCoordinates[0].x;
+                absoluteCoordinates[i].y  = y - currentCoordinates[0].y;
 
             }
 
 
             for (var k = 0; k < absoluteCoordinates.length; k++) {
 
-                var absoluteX =  absoluteCoordinates[k].y*1+currentCoordinates.coordinatesInField[0].x;
-                var absoluteY =  absoluteCoordinates[k].x*(-1)+currentCoordinates.coordinatesInField[0].y;
+                var absoluteX =  absoluteCoordinates[k].y*1+currentCoordinates[0].x;
+                var absoluteY =  absoluteCoordinates[k].x*(-1)+currentCoordinates[0].y;
 
 
-                futureCoordinates.coordinatesInField[k].x = absoluteX;
-                futureCoordinates.coordinatesInField[k].y = absoluteY;
+                futureCoordinates[k].x = absoluteX;
+                futureCoordinates[k].y = absoluteY;
 
             }
 
@@ -340,59 +306,15 @@ window.onload = function () {
         };
 
 
-        // this.saveToFutureCoordinates = function (figureArray) {
-        //
-        //     for (var i = 0; i < futureCoordinates.coordinatesInField.length; i++) {
-        //
-        //         futureCoordinates.coordinatesInField[i].x = figureArray[i].x;
-        //         futureCoordinates.coordinatesInField[i].y = figureArray[i].y;
-        //
-        //     }
-        // };
-
-
-
-        // this.makeEmptyFigure = function () {
-        //
-        //
-        //     var tempFigure = {
-        //         coordinatesInField: []
-        //     };
-        //
-        //     for (var k = 0; k < 4; k++) {
-        //
-        //         tempFigure.coordinatesInField[k] = {x: null, y: null};
-        //
-        //     }
-        //
-        //     return tempFigure;
-        // };
-        //
-        //
-        // this.copyFigure = function () {
-        //
-        //
-        //     var tempFigure = this.makeEmptyFigure();
-        //
-        //     for (var k = 0; k < 4; k++) {
-        //
-        //         tempFigure.coordinatesInField[k].x =  currentCoordinates.coordinatesInField[k].x;
-        //         tempFigure.coordinatesInField[k].y =  currentCoordinates.coordinatesInField[k].y;
-        //
-        //
-        //     }
-        //
-        //     return tempFigure;
-        // };
 
 
         this.saveToCurrentCoordinates = function() {
 
 
-            for (var k = 0; k < futureCoordinates.coordinatesInField.length; k++) {
+            for (var k = 0; k < futureCoordinates.length; k++) {
 
-                currentCoordinates.coordinatesInField[k].x = futureCoordinates.coordinatesInField[k].x;
-                currentCoordinates.coordinatesInField[k].y = futureCoordinates.coordinatesInField[k].y;
+                currentCoordinates[k].x = futureCoordinates[k].x;
+                currentCoordinates[k].y = futureCoordinates[k].y;
 
             }
 
@@ -405,13 +327,13 @@ window.onload = function () {
             var increaseX = vector.x;
             var increaseY = vector.y;
 
-            for (var i = 0; i < currentCoordinates.coordinatesInField.length; i++) {
+            for (var i = 0; i < currentCoordinates.length; i++) {
 
-                var x = currentCoordinates.coordinatesInField[i].x;
-                var y = currentCoordinates.coordinatesInField[i].y;
+                var x = currentCoordinates[i].x;
+                var y = currentCoordinates[i].y;
 
-                futureCoordinates.coordinatesInField[i].x = increaseX + x;
-                futureCoordinates.coordinatesInField[i].y = increaseY + y;
+                futureCoordinates[i].x = increaseX + x;
+                futureCoordinates[i].y = increaseY + y;
 
             }
 
@@ -473,9 +395,9 @@ window.onload = function () {
             return figureCollection[randomFigureNumber];
         };
 
-        this.addFigureToCollection = function(){
+        this.addFigureToCollection = function(figures){
 
-            figureCollection.push.apply(figureCollection, arguments);
+            figureCollection.push.apply(figureCollection, figures);
         }
 
     }
@@ -489,9 +411,8 @@ window.onload = function () {
 
             for(var i=0; i < arrField[0].length; i++ ){
 
-                if(arrField[0][i] == 1 ){
+                if(arrField[0][i] == 1){
                     return true ;
-
                 }
             }
 
@@ -507,13 +428,12 @@ window.onload = function () {
             var maxCoordinateX = field[0].length;
             var maxCoordinateY = field.length;
 
-
             var counter;
 
-            for(var j = 0; j < figureCoordinates.coordinatesInField.length; j++ ){
+            for(var j = 0; j < figureCoordinates.length; j++ ){
 
-                var coordinateX = figureCoordinates.coordinatesInField[j].x;
-                var coordinateY = figureCoordinates.coordinatesInField[j].y;
+                var coordinateX = figureCoordinates[j].x;
+                var coordinateY = figureCoordinates[j].y;
 
                 if( coordinateY < maxCoordinateY &&
                     coordinateX < maxCoordinateX &&
@@ -574,15 +494,10 @@ window.onload = function () {
 
 
 
-            var innerFigureCoordinates = figure.coordinatesInField;
+            for (var k = 0; k < figure.length; k++) {
 
-            for (var k = 0; k < innerFigureCoordinates.length; k++) {
-
-                var figureXCoordinate = innerFigureCoordinates[k].x;
-                var figureYCoordinate = innerFigureCoordinates[k].y;
-
-                figureXCoordinate = withAndHeightQuad*(figureXCoordinate);
-                figureYCoordinate = withAndHeightQuad*(figureYCoordinate);
+                var figureXCoordinate = withAndHeightQuad*figure[k].x;
+                var figureYCoordinate = withAndHeightQuad*figure[k].y;
 
                 paper.rect(figureXCoordinate, figureYCoordinate, 35, 35 );
 
@@ -594,33 +509,43 @@ window.onload = function () {
 
 
 
+
+
+    // generator.addFigureToCollection(figureLetterT);
+
+
+    startGame();
+
+
+
+
+    function startGame(){
+
     var tetrisEngine = new TetrisEngine();
     var generator = new FigureGenerator();
     var fieldClass  = new Field();
     var figureClass = new Figure();
 
 
-
-    generator.addFigureToCollection(figureLetterL,figureCube,figureLetterI,figureLetterT);
-    generator.addFigureToCollection(figureJ, figureS, figureZ);
-
-
-
-    // generator.addFigureToCollection(figureLetterT);
-
-
-    moweFigure();
-
+    var  figures = [
+        figureLetterL,
+        figureCube,
+        figureLetterI,
+        figureLetterT,
+        figureJ,
+        figureS,
+        figureZ
+    ];
 
 
 
-    function moweFigure() {
+    generator.addFigureToCollection(figures);
 
         var speed = 250;
 
         var makeNewFigure = true;
 
-          var movFig = setInterval( moveFukingDown, speed);
+          var movFig = setInterval( gameCycle, speed);
 
         $(document).keydown(function(e) {
             switch (e.which) {
@@ -687,19 +612,7 @@ window.onload = function () {
 
 
 
-        // $(document).keyup(function(e) {
-        //     switch (e.which) {
-        //
-        //         case 40:
-        //
-        //             break;
-        //
-        //     }
-        // });
-        //
-
-
-        function moveFukingDown() {
+        function gameCycle() {
 
 
             if(makeNewFigure){
@@ -726,7 +639,7 @@ window.onload = function () {
                 makeNewFigure = true;
                 var addFigure = figureClass.getCurrentCoordinates();
                 fieldClass.addFigureToField(addFigure);
-                fieldClass.checkFilledRow();
+                fieldClass.removeFilledRows();
 
 
                 var fieldForCheck = fieldClass.getField();
@@ -745,116 +658,9 @@ window.onload = function () {
 
     };
 
-    //
-    //     function moveFukingDown() {
-    //
-    //
-    //         console.time('test');
-    //
-    //
-    //         if(makeNewFigure){
-    //             tetrisEngine.setFigureOnField();
-    //             tetrisEngine.drawField();
-    //         }
-    //
-    //
-    //         var figureForCheckh  = tetrisEngine.moveDown();
-    //         var hasNoCollision = tetrisEngine.moveCheck(figureForCheckh);
-    //
-    //         if(hasNoCollision){
-    //
-    //             makeNewFigure = false;
-    //             tetrisEngine.drawField();
-    //
-    //         }else{
-    //
-    //             makeNewFigure = true;
-    //
-    //             tetrisEngine.addFigureToField();
-    //             tetrisEngine.checkFilledRow();
-    //             // tetrisEngine.drawField();
-    //
-    //             var gameIsOver = tetrisEngine.gameIsOver();
-    //
-    //             if(gameIsOver){
-    //                 clearInterval(movFig);
-    //                 console.log(' game over ');
-    //             }
-    //
-    //         }
-    //
-    //         console.timeEnd('test');
-    //
-    //     }
-    //
-    // };
 
 
 
-
-
-
-        //
-        // var simpleFig  = {
-        //     coordinates :[
-        //         {x: 0, y: 0},
-        //         {x: -1, y: 0},
-        //         {x: 0, y: -1},
-        //         {x: 1, y: -1}
-        //     ]
-        // };
-        //
-        // function RecreateFigure(figure) {
-        //
-        //     this.makeAbsolute = function () {
-        //
-        //     }
-        //
-        // }
-
-
-
-
-    //
-    // var valuesArr = ['v0', 'v1', 'v2', 'v3', 'v4', 'v5','v6', 'v7'];
-    //
-    // console.log(valuesArr);
-    //
-    // var removqlIndexes = [3];
-    //
-    //
-    // var startArr = [];
-    // var tempArr;
-    //
-    // for(var index=0; index < removqlIndexes.length ; index++){
-    //
-    //     var firstPartArr = valuesArr.slice(0, removqlIndexes[0]);
-    //     console.log(firstPartArr);
-    //
-    //     var secondPartArr = valuesArr.slice( removqlIndexes[0]+1);
-    //     console.log(secondPartArr);
-    //
-    //
-    //
-    //     startArr = firstPartArr.concat(secondPartArr);
-    //
-    // }
-    //
-    // console.log('result');
-    //
-    // console.log(startArr);
-    //
-    // for(var indexShoe = 0 ;  indexShoe< removqlIndexes.length ; indexShoe++){
-    //
-    //     console.log(valuesArr[removqlIndexes[indexShoe]]);
-    // }
-    //
-    //
-    // console.log('****');
-    //
-    // console.log(valuesArr);
-    //
-    // console.log('****');
 
 
 
