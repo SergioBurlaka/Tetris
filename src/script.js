@@ -228,7 +228,7 @@ window.onload = function () {
     }
 
 
-    function Figure() {
+    function Figure(createFigure) {
 
 
         var futureCoordinates = [
@@ -258,7 +258,7 @@ window.onload = function () {
         };
 
 
-        this.addFigureToModel = function (figure) {
+          function addFigureToModel(figure) {
 
 
             for (var i = 0; i < figure.relativeCoordinates.length; i++) {
@@ -272,6 +272,8 @@ window.onload = function () {
             }
 
         };
+
+        addFigureToModel(createFigure);
 
 
 
@@ -530,7 +532,7 @@ window.onload = function () {
     var tetrisEngine = new TetrisEngine();
     var generator = new FigureGenerator();
     var fieldClass  = new Field();
-    var figureClass = new Figure();
+        var figureClass;
 
 
     var  figures = [
@@ -548,10 +550,9 @@ window.onload = function () {
     generator.addFigureToCollection(figures);
 
         var speed = 250;
-
         var makeNewFigure = true;
+        var movFig = setInterval( gameCycle, speed);
 
-          var movFig = setInterval( gameCycle, speed);
 
         $(document).keydown(function(e) {
             switch (e.which) {
@@ -617,13 +618,13 @@ window.onload = function () {
         });
 
 
-
         function gameCycle() {
 
 
             if(makeNewFigure){
                 var figure = generator.getFigure();
-                figureClass.addFigureToModel(figure);
+                 figureClass = new Figure(figure);
+
             }
 
 
@@ -643,6 +644,7 @@ window.onload = function () {
 
             }else{
                 makeNewFigure = true;
+
                 var addFigure = figureClass.getCurrentCoordinates();
                 fieldClass.addFigureToField(addFigure);
                 fieldClass.removeFilledRows();
@@ -661,6 +663,10 @@ window.onload = function () {
 
 
         }
+
+
+
+
 
     };
 
