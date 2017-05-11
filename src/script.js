@@ -114,11 +114,11 @@ window.onload = function () {
 
         this.addFigureToField = function (figure) {
 
-            console.log('field_Before');
-            console.log(arrField.slice());
-
-            console.log('figure_Before');
-            console.log(figure.slice());
+            // console.log('field_Before');
+            // console.log(arrField.slice());
+            //
+            // console.log('figure_Before');
+            // console.log(figure.slice());
 
 
             for (var i = 0; i < figure.length; i++) {
@@ -129,22 +129,13 @@ window.onload = function () {
                 arrField[coordinateAddFigY][coordinateAddFigX] = 1;
 
             }
-
-            console.log('field_After');
-            console.log(arrField);
-
-        };
-
-        this.removeFilledRows = function () {
-
-            var valuesArr = this.getField();
-            var removedIndexes = this.getFilledRow(valuesArr);
-
-            if(removedIndexes.length){
-                this.moveFieldDown(removedIndexes);
-            }
+            //
+            // console.log('field_After');
+            // console.log(arrField);
 
         };
+
+
 
 
         this.getFilledRow = function (field) {
@@ -174,23 +165,42 @@ window.onload = function () {
 
 
 
+        this.removeFilledRows = function () {
+
+            var valuesArr = this.getField();
+            var indexesForRemove = this.getFilledRow(valuesArr);
+
+            if(indexesForRemove.length){
+                this.moveFieldDown(indexesForRemove);
+            }
+
+        };
+
+
+
+        this.deleteRow = function (field, rowIndex) {
+
+            var firstPartArr = field.slice(0,rowIndex );
+            var secondPartArr = field.slice( rowIndex+1);
+
+            return firstPartArr.concat(secondPartArr);
+        };
+
+
+
         this.moveFieldDown = function (removqlIndexes) {
 
 
             var valuesArr = this.getField().slice();
             var clearRow = [0,0,0,0,0,0,0,0,0,0];
 
-            var iterations = removqlIndexes.length;
             var firstElement = removqlIndexes[0];
 
 
-            for(var index=0; index < iterations ; index++){
+            while(removqlIndexes.length){
 
-                var firstPartArr = valuesArr.slice(0,firstElement );
-                var secondPartArr = valuesArr.slice( firstElement+1);
-
-
-                var finalArray = firstPartArr.concat(secondPartArr);
+                var finalArray = this.deleteRow(valuesArr,firstElement);
+                finalArray.unshift(clearRow);
 
                 removqlIndexes  = this.getFilledRow(finalArray);
 
@@ -199,10 +209,8 @@ window.onload = function () {
                 valuesArr = finalArray;
             }
 
-
-            for(var i = 0; i < iterations; i++){
-                valuesArr.unshift(clearRow);
-            }
+            console.log(valuesArr);
+            console.log('valuesArr');
 
 
             for(var k = -4; k < 0; k++){
@@ -300,8 +308,6 @@ window.onload = function () {
                 futureCoordinates[k].y = absoluteY;
 
             }
-
-
 
         };
 
