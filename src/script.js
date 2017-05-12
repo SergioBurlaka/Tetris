@@ -1,9 +1,6 @@
 
 
-
 window.onload = function () {
-
-
 
 
     var figureZ = {
@@ -16,7 +13,6 @@ window.onload = function () {
     };
 
 
-
     var figureS = {
         relativeCoordinates: [
             {x: 0, y: 0},
@@ -25,7 +21,6 @@ window.onload = function () {
             {x: 1, y: -1}
         ]
     };
-
 
 
     var figureCube = {
@@ -121,7 +116,7 @@ window.onload = function () {
 
         function initialaseArrField(arr) {
 
-            for (var i = -4; i < 20; i++) {
+            for (var i = 0; i < 24; i++) {
                 arr[i] = [];
                 for (var j = 0; j < 10; j++) {
                     arr[i][j] = 0;
@@ -132,9 +127,6 @@ window.onload = function () {
 
         initialaseArrField(arrField);
 
-        this.setField = function (newField) {
-            arrField = newField;
-        };
 
         this.getField = function () {
             return arrField;
@@ -143,12 +135,6 @@ window.onload = function () {
 
 
         this.addFigureToField = function (figure) {
-
-            // console.log('field_Before');
-            // console.log(arrField.slice());
-            //
-            // console.log('figure_Before');
-            // console.log(figure.slice());
 
 
             for (var i = 0; i < figure.length; i++) {
@@ -159,9 +145,7 @@ window.onload = function () {
                 arrField[coordinateAddFigY][coordinateAddFigX] = 1;
 
             }
-            //
-            // console.log('field_After');
-            // console.log(arrField);
+
 
         };
 
@@ -182,31 +166,18 @@ window.onload = function () {
                         break
                     }
 
-                    // else{
-                    //     counterOfFill = false;
-                    //
-                    // }
 
                 }
 
-                // if(!(arrField[i][9] == 1 && counterOfFill == true)){
-                //     rowsThatFill.push(arrField[i]);
-                // }
             }
 
             for(var l = 0; l < arrField.length-counterOfFill; l++){
                 rowsThatFill.unshift(clearRow);
             }
 
-            for(var k = -4; k < 0; k++){
-                rowsThatFill[k] = clearRow;
-                    }
-
             arrField = rowsThatFill;
-            // console.log(rowsThatFill);
-            // return rowsThatFill;
-        };
 
+        };
 
 
 
@@ -244,7 +215,7 @@ window.onload = function () {
             for (var i = 0; i < figure.relativeCoordinates.length; i++) {
 
                 var coordinateX = 4,
-                    coordinateY = -1;
+                    coordinateY = 1;
 
                 currentCoordinates[i].x = coordinateX + figure.relativeCoordinates[i].x;
                 currentCoordinates[i].y = coordinateY + figure.relativeCoordinates[i].y;
@@ -294,7 +265,6 @@ window.onload = function () {
                 var absoluteX =  absoluteCoordinates[k].y*1+currentCoordinates[0].x;
                 var absoluteY =  absoluteCoordinates[k].x*(-1)+currentCoordinates[0].y;
 
-
                 futureCoordinates[k].x = absoluteX;
                 futureCoordinates[k].y = absoluteY;
 
@@ -306,7 +276,6 @@ window.onload = function () {
 
 
         this.saveToCurrentCoordinates = function() {
-
 
             for (var k = 0; k < futureCoordinates.length; k++) {
 
@@ -380,6 +349,7 @@ window.onload = function () {
 
     function TetrisEngine() {
 
+
         this.gameIsOver  = function (arrField) {
 
             for(var i=0; i < arrField[0].length; i++ ){
@@ -391,8 +361,6 @@ window.onload = function () {
 
             return false;
         };
-
-
 
 
         this.moveCheck = function (figureCoordinates, field) {
@@ -429,27 +397,9 @@ window.onload = function () {
         var paper  = Raphael(20, 20, 350, 700);
 
 
-        this.drawField  = function (figure, tetrisField) {
-
-
-            paper.clear();
+        function drawLines() {
 
             var withAndHeightQuad = 35;
-
-            for (var i = 0; i < tetrisField.length; i++) {
-                for (var j = 0; j < tetrisField[i].length; j++) {
-
-                    var coordinateX = withAndHeightQuad*j;
-                    var coordinateY = withAndHeightQuad*i;
-
-                    if(tetrisField[i][j] !== 0){
-
-                        paper.rect(coordinateX, coordinateY, 35, 35 );
-
-                    }
-
-                }
-            }
 
             for(var vetrical = 0; vetrical < 11; vetrical++){
 
@@ -465,6 +415,34 @@ window.onload = function () {
 
             }
 
+        }
+
+
+        this.drawField  = function (figure, tetrisField) {
+
+
+            paper.clear();
+
+            drawLines();
+
+            var heightOffset = 140;
+            var withAndHeightQuad = 35;
+
+            for (var i = 0; i < tetrisField.length; i++) {
+                for (var j = 0; j < tetrisField[i].length; j++) {
+
+                    var coordinateX = withAndHeightQuad*j;
+                    var coordinateY = withAndHeightQuad*i;
+
+                    if(tetrisField[i][j] == 1){
+
+                        paper.rect(coordinateX, coordinateY-heightOffset, 35, 35 );
+
+                    }
+
+                }
+            }
+
 
 
             for (var k = 0; k < figure.length; k++) {
@@ -472,14 +450,13 @@ window.onload = function () {
                 var figureXCoordinate = withAndHeightQuad*figure[k].x;
                 var figureYCoordinate = withAndHeightQuad*figure[k].y;
 
-                paper.rect(figureXCoordinate, figureYCoordinate, 35, 35 );
+                paper.rect(figureXCoordinate, figureYCoordinate-heightOffset, 35, 35 );
 
             }
 
         }
 
     }
-
 
 
 
@@ -632,17 +609,6 @@ window.onload = function () {
         }
 
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
