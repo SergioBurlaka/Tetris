@@ -171,8 +171,6 @@ window.onload = function () {
 
 
 
-
-
     function Figure(createFigure) {
 
 
@@ -324,6 +322,8 @@ window.onload = function () {
 
         this.renderer = {};
 
+        var  setIntervalID;
+
         this.setRenderer = function (newRenderer) {
             this.renderer = newRenderer;
         };
@@ -334,6 +334,33 @@ window.onload = function () {
 
         this.setField = function (newField) {
             this.gameField = newField;
+        };
+
+        var moveDownCycle;
+
+        this.setMoveDownCycle = function (callBack) {
+            moveDownCycle = callBack;
+        };
+
+        this.moveDownNormalSpeed = function () {
+
+            this.interruptInterval();
+
+            var speed = 250;
+            setIntervalID = setInterval( moveDownCycle, speed);
+
+        };
+
+        this.moveDownHighSpeed = function () {
+            this.interruptInterval();
+            var speed = 100;
+            setIntervalID = setInterval( moveDownCycle, speed);
+
+
+        };
+
+        this.interruptInterval = function () {
+            clearInterval( setIntervalID);
         };
 
 
@@ -422,7 +449,32 @@ window.onload = function () {
     
     function Renderer() {
 
-        var paper  = Raphael(20, 20, 350, 700);
+        // var paperNextFigure  = Raphael(395, 20,315, 175);
+
+        var paperNextFigure  = new Raphael($('.center-div').get(0),315, 175);
+        $(paperNextFigure.canvas).attr('id', 'preview');
+
+
+
+        this.drawNextFigure = function (figure) {
+            paperNextFigure.clear();
+            var withAndHeightQuad = 35;
+
+            for (var k = 0; k < figure.relativeCoordinates.length; k++) {
+
+                var figureXCoordinate = withAndHeightQuad*(figure.relativeCoordinates[k].x+4);
+                var figureYCoordinate = withAndHeightQuad*(figure.relativeCoordinates[k].y+3);
+
+                paperNextFigure.rect(figureXCoordinate, figureYCoordinate, 35, 35 );
+
+            }
+
+        };
+
+
+        var paper  = new Raphael($('.center-div').get(0),350, 700);
+        $(paper.canvas).attr('id', 'field');
+
 
         function drawLines() {
 
@@ -438,9 +490,11 @@ window.onload = function () {
             for(var horizontal = 0; horizontal < 25; horizontal++){
 
                 var horizInterval =  horizontal*withAndHeightQuad;
-                paper.path( ["M", 0, horizInterval, "L", 350, horizInterval ] );
+                 paper.path( ["M", 0, horizInterval, "L", 350, horizInterval ] );
 
             }
+
+
 
         }
         drawLines();
@@ -479,6 +533,7 @@ window.onload = function () {
 
                 paper.rect(figureXCoordinate, figureYCoordinate-heightOffset, 35, 35 );
 
+
             }
 
         }
@@ -488,40 +543,120 @@ window.onload = function () {
 
     function keyHandler(currentFigure) {
 
+        var togglePause = true;
+        var toggleAcceleration = true;
+
         $(document).keydown(function(e) {
             switch (e.which) {
 
-                case 37:
-                    currentFigure.moveFigureLeft();
+                case 37 :
+                    if(togglePause){
+                        currentFigure.moveFigureLeft();
+                    }
                     break;
 
-                case 39:
-                    currentFigure.moveFigureRight();
+                case 39 :
+                    if(togglePause){
+                        currentFigure.moveFigureRight();
+                    }
                     break;
 
-                case 32:
-                    currentFigure.figureRotate();
+                case 32 :
+                    if(togglePause){
+                        currentFigure.figureRotate();
+                    }
+                    break;
+
+                case 40:
+                    if(toggleAcceleration){
+                        currentFigure.moveDownHighSpeed();
+                        toggleAcceleration  = false;
+                    }
+                    break;
+
+                case 80:
+                    if(togglePause){
+                        currentFigure.interruptInterval();
+                        togglePause = false;
+                    }else{
+                        currentFigure.moveDownNormalSpeed();
+                        togglePause = true;
+                    }
                     break;
             }
         });
+
+
+        $(document).keyup(function(e) {
+            switch (e.which) {
+
+                case 40:
+                    if(!toggleAcceleration){
+                        currentFigure.moveDownNormalSpeed();
+                        toggleAcceleration  = true;
+                    }
+                    break;
+            }
+        });
+
+
     }
 
 
+
+    function Gamestart() {
+
+
+
+
+        this.drawInclinedLines = function () {
+
+
+            var splashScreen  = new Raphael($('.center-div').get(0),740, 740);
+            $(splashScreen.canvas).attr('id', 'svgMain');
+
+            var withAndHeightQuad = 10;
+
+            for (var vetrical = -80; vetrical < 70; vetrical++) {
+
+                var vertInterval = vetrical * withAndHeightQuad;
+                splashScreen.path(["M", 700 - vertInterval, 0 , "L", 0, 700-vertInterval]);
+
+            }
+        }
+
+        }
+
+        function startScreen() {
+
+            var majorScreen = new Gamestart();
+            majorScreen.drawInclinedLines();
+
+
+        }
+
+
+
+
     initGame();
+    startScreen();
 
 
     function initGame(){
+
+        var makeNewFigure = true;
+        var currentFigure;
+        var nextFigure;
+
 
         var generator = new FigureGenerator();
         var gameField = new Field();
         var renderer = new Renderer();
 
-        var currentFigure;
         var engine = new TetrisEngine();
 
         engine.setField(gameField);
         engine.setRenderer(renderer);
-
 
 
         var  figures = [
@@ -536,23 +671,21 @@ window.onload = function () {
 
 
         generator.addFigureToCollection(figures);
+        nextFigure = generator.getFigure();
 
-
-        var speed = 250;
-        var makeNewFigure = true;
-        var movFig = setInterval( gameCycle, speed);
-
+        engine.setMoveDownCycle(gameCycle);
+        engine.moveDownNormalSpeed();
 
         keyHandler(engine);
 
 
         function gameCycle() {
 
-
             if(makeNewFigure){
 
-                var figure = generator.getFigure();
-                currentFigure = new Figure(figure);
+                currentFigure = new Figure(nextFigure);
+                nextFigure = generator.getFigure();
+                renderer.drawNextFigure(nextFigure);
                 engine.setFigure(currentFigure);
 
             }
@@ -572,8 +705,13 @@ window.onload = function () {
                 gameField.removeFilledRows();
 
                 if(engine.gameIsOver()){
-                    clearInterval(movFig);
+                    engine.interruptInterval();
+
+                    $(document).off("keydown");
+                    $(document).off("keyup");
+
                     console.log(' game over ');
+
                 }
 
             }

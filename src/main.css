@@ -1,7 +1,16 @@
 svg {
     /*border-style: solid;*/
     /*border-width: 2px;*/
-    background-color: rgba(0, 181, 236, 0.17);
+    background-color: rgb(221, 238, 254);
+    border-style: solid;
+    border-width: 2px;
+    border-color: #99b0ca;
+    /*margin: 10px 10px 10px 267px;*/
+
+    /*margin: auto;*/
+    /*position: absolute;*/
+
+
 }
 
 rect, circle{
@@ -12,8 +21,78 @@ rect, circle{
     /*stroke-opacity:0.9;*/
 }
 
+.lines{
+    stroke-width: 1.5;
+    stroke-opacity: 0.05;
+    stroke: rgb(0, 0, 0);
+}
+
 path{
     stroke-width: 1.5;
     stroke-opacity: 0.05;
     stroke: rgb(0, 0, 0);
+}
+
+
+
+.fil0 {fill:none}
+
+.passes, .str0{
+    stroke: #4f7885;
+    stroke-opacity: 0.9;
+    stroke-width: 12;
+
+
+}
+
+
+.fill{
+    fill: #ffffff;
+    fill-opacity:1;
+
+}
+
+.point{
+    fill:none;
+}
+
+
+.center-div{
+    margin: auto;
+    width: 740px;
+    height: 740px;
+    position: relative;
+
+
+}
+
+.logo {
+    width: 350px;
+    height: 175px;
+    background-color: rgba(93, 142, 236, 0);
+    border: none;
+    position: absolute;
+    bottom:0;
+    right: 0;
+
+}
+
+#field {
+    margin: -727px -9px 39px 25px;
+    background-color: rgb(233, 247, 254);
+
+
+}
+
+
+#svgMain {
+
+    position: absolute;
+    top:0;
+    left: 0;
+}
+
+#preview {
+    background-color: rgb(233, 247, 254);
+    margin: -769px 20px 581px 405px;
 }
