@@ -128,6 +128,7 @@ window.onload = function () {
 
         this.addFigureToField = function (figure) {
 
+
             for (var i = 0; i < figure.length; i++) {
 
                 var coordinateAddFigX =  figure[i].x;
@@ -412,8 +413,8 @@ window.onload = function () {
             return counter
 
         };
-        
-        
+
+
         this.saveAndRender = function () {
 
             if(this.moveCheck()){
@@ -436,17 +437,17 @@ window.onload = function () {
             this.currentFigure.moveRight();
             this.saveAndRender();
         };
-        
+
         this.figureRotate = function () {
             this.currentFigure.rotate();
             this.saveAndRender();
         };
-        
+
 
     }
 
 
-    
+
     function Renderer() {
 
         var divClass = $('.center-div');
