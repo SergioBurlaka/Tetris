@@ -449,9 +449,8 @@ window.onload = function () {
     
     function Renderer() {
 
-        // var paperNextFigure  = Raphael(395, 20,315, 175);
-
-        var paperNextFigure  = new Raphael($('.center-div').get(0),315, 175);
+        var divClass = $('.center-div');
+        var paperNextFigure  = new Raphael(divClass.get(0),315, 175);
         $(paperNextFigure.canvas).attr('id', 'preview');
 
 
@@ -472,7 +471,7 @@ window.onload = function () {
         };
 
 
-        var paper  = new Raphael($('.center-div').get(0),350, 700);
+        var paper  = new Raphael(divClass.get(0),350, 700);
         $(paper.canvas).attr('id', 'field');
 
 
@@ -616,11 +615,19 @@ window.onload = function () {
             $(splashScreen.canvas).attr('id', 'svgMain');
 
             var withAndHeightQuad = 10;
+            var a = 0;
 
-            for (var vetrical = -80; vetrical < 70; vetrical++) {
+            for (var vetrical = 1; vetrical < 149; vetrical++) {
 
                 var vertInterval = vetrical * withAndHeightQuad;
-                splashScreen.path(["M", 700 - vertInterval, 0 , "L", 0, 700-vertInterval]);
+
+                if(vetrical > 74){
+                    a = a +10;
+                    vertInterval = 740;
+                }
+
+                splashScreen.path(["M",  vertInterval, a , "L", a, vertInterval]);
+
 
             }
         }
@@ -638,11 +645,21 @@ window.onload = function () {
 
 
 
-    initGame();
+
     startScreen();
 
 
+    $(document).one('click', function () {
+
+        initGame();
+
+    });
+
+
+
     function initGame(){
+
+        $( "#logo" ).removeClass( "logoStartScreen" ).addClass( "logo" );
 
         var makeNewFigure = true;
         var currentFigure;
@@ -713,17 +730,14 @@ window.onload = function () {
                     console.log(' game over ');
 
                 }
-
             }
-
         }
-
     }
 
 
 
 
-}
+};
 
 
 

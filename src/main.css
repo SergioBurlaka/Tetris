@@ -72,27 +72,47 @@ path{
     background-color: rgba(93, 142, 236, 0);
     border: none;
     position: absolute;
-    bottom:0;
-    right: 0;
+
+    bottom: -19px ;
+    right: 6px;
+    z-index: 10;
 
 }
 
-#field {
-    margin: -727px -9px 39px 25px;
-    background-color: rgb(233, 247, 254);
-
+.logoStartScreen {
+    width: 350px;
+    height: 175px;
+    background-color: rgba(93, 142, 236, 0);
+    border: none;
+    margin: -762px 33px 384px 204px;
+    position: relative;
 
 }
+
+
 
 
 #svgMain {
+    /*background-color: rgba(233, 247, 254, 0.03);*/
 
     position: absolute;
     top:0;
     left: 0;
 }
 
+#field {
+    /*margin: -727px -9px 39px 25px;*/
+    margin: 4px -7px -729px 24px;;
+
+    background-color: rgb(233, 247, 254);
+    z-index: 10;
+
+
+}
 #preview {
     background-color: rgb(233, 247, 254);
-    margin: -769px 20px 581px 405px;
+    /*margin: -769px 20px 581px 405px;*/
+    margin: 1px -12px -204px 29px;
+    z-index: 10;
+
 }
