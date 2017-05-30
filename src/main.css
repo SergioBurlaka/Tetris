@@ -111,8 +111,106 @@ path{
 }
 #preview {
     background-color: rgb(233, 247, 254);
-    /*margin: -769px 20px 581px 405px;*/
     margin: 1px -12px -204px 29px;
     z-index: 10;
 
 }
+
+#play{
+    background-color: rgba(93, 142, 236, 0);
+    border: none;
+    z-index: 10;
+    fill-rule:evenodd;
+
+    width: 135px;
+    height: 65px;
+
+    position: absolute;
+    bottom: 240px;
+    right: 298px;
+}
+.str0play {
+    stroke: #7889a7;
+    stroke-width:2.3622;
+}
+.fil0play {fill:#7889a7}
+.fil1play {fill:#7889a7}
+#play rect{fill-opacity: 1; fill: #7889a7;}
+
+
+
+#play:hover .fil0play{fill: #5c8391;}
+#play:hover .fil1play{fill: #5c8391;}
+#play:hover .str0play{stroke: #5c8391;}
+
+#pauseScreen{
+    fill: #becfe9;
+    fill-opacity: 0.7;
+}
+
+
+
+#paused{
+    width: 202px;
+    height: 82px;
+    background-color: rgba(93, 142, 236, 0);
+    border: none;
+    z-index: 10;
+
+
+    fill-rule:evenodd;
+    display: none;
+
+    position: absolute;
+    bottom: 309px;
+    right: 437px;
+}
+
+.str1Paused {stroke:#5c8391;stroke-width:0.700394}
+.str0Paused {stroke:#5c8391;stroke-width:1.00039}
+.fil0Paused {fill:#5c8391}
+
+.str0GameOver {stroke:#7889a7;stroke-width:0.700395}
+.fil0GameOver {fill:#7889a7}
+.fil1GameOver {fill:#7889a7}
+
+#gameOver {
+
+    display: none;
+    width: 310px;
+    height: 73px;
+    z-index: 10;
+
+    background-color: rgba(93, 142, 236, 0);
+    border: none;
+    fill-rule:evenodd;
+
+    position: absolute;
+    bottom: 327px;
+    right: 381px;
+
+
+}
+
+
+.str0OkButton {stroke:#7889a7;stroke-width:0.700397}
+.fil0OkButton {fill:#7889a7}
+
+#OkButton {
+
+    display: none;
+    width: 105px;
+    height: 55px;
+    z-index: 10;
+
+    background-color: rgba(93, 142, 236, 0);
+    border: none;
+    fill-rule:evenodd;
+
+    position: absolute;
+    bottom: 194px;
+    right: 492px;
+}
+
+#OkButton:hover .fil0OkButton{fill: #5c8391;}
+#OkButton:hover .str0OkButton{stroke: #5c8391;}

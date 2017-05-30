@@ -371,7 +371,7 @@ window.onload = function () {
 
             for(var i=0; i < arrField[0].length; i++ ){
 
-                if(arrField[0][i] == 1){
+                if(arrField[4][i] == 1){
                     return true ;
                 }
             }
@@ -414,6 +414,28 @@ window.onload = function () {
 
         };
 
+
+        this.createScreenForPause = function () {
+            $( "#paused" ).show();
+            this.renderer.createPauseScreen();
+        };
+
+        this.clearScreenForPause = function () {
+            $( "#paused" ).hide();
+            this.renderer.deletePauseScreen()
+        };
+
+        this.createScreenForGameOver = function () {
+            $( "#gameOver" ).show();
+            $( "#OkButton" ).show();
+            this.renderer.createPauseScreen();
+        };
+
+        this.clearScreenForGameOver = function () {
+            $( "#gameOver" ).hide();
+            $( "#OkButton" ).hide();
+            this.renderer.deletePauseScreen()
+        };
 
         this.saveAndRender = function () {
 
@@ -474,6 +496,20 @@ window.onload = function () {
 
         var paper  = new Raphael(divClass.get(0),350, 700);
         $(paper.canvas).attr('id', 'field');
+
+
+
+        var pauseScreen;
+
+        this.createPauseScreen = function () {
+             pauseScreen = paper.rect(0, 0, 350, 700 );
+            pauseScreen.node.setAttribute("id","pauseScreen");
+
+        };
+
+        this.deletePauseScreen = function () {
+            pauseScreen.remove();
+        };
 
 
         function drawLines() {
@@ -576,9 +612,13 @@ window.onload = function () {
 
                 case 80:
                     if(togglePause){
+
+
+                        currentFigure.createScreenForPause();
                         currentFigure.interruptInterval();
                         togglePause = false;
                     }else{
+                        currentFigure.clearScreenForPause();
                         currentFigure.moveDownNormalSpeed();
                         togglePause = true;
                     }
@@ -605,9 +645,6 @@ window.onload = function () {
 
 
     function Gamestart() {
-
-
-
 
         this.drawInclinedLines = function () {
 
@@ -650,9 +687,10 @@ window.onload = function () {
     startScreen();
 
 
-    $(document).one('click', function () {
+    $('#play').on('click', function () {
 
         initGame();
+        $(this).hide();
 
     });
 
@@ -729,11 +767,34 @@ window.onload = function () {
                     $(document).off("keyup");
 
                     console.log(' game over ');
+                    engine.createScreenForGameOver();
+
+                    $('#OkButton').on('click', function () {
+
+                        restartGame(engine);
+
+                    });
+
+
 
                 }
             }
         }
     }
+
+    function restartGame(context) {
+        context.clearScreenForGameOver();
+
+        $( "#field" ).remove();
+        $( "#preview" ).remove();
+        $( "#svgMain" ).remove();
+        $('#play').show();
+        $( "#logo" ).removeClass( "logo" ).addClass( "logoStartScreen" );
+        startScreen();
+
+    }
+
+
 
 
 
