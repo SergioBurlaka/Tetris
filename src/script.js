@@ -104,6 +104,7 @@ window.onload = function () {
 
 
         var  arrField = [];
+        var filedLines = 0;
 
         function initialaseArrField(arr) {
 
@@ -138,6 +139,33 @@ window.onload = function () {
             }
 
         };
+
+
+        this.countFilledRows = function () {
+            var counterOfFill = 0;
+            var isRowFiled ;
+
+            for ( var i = 0; i < arrField.length; i++) {
+                for (var j = 0; j < arrField[0].length; j++) {
+
+                    if(arrField[i][j] == 0){
+                        isRowFiled = false
+                        break
+                    }else{
+                        isRowFiled = true
+                    }
+                }
+
+                if(arrField[i][9] == 1  && isRowFiled){
+                    counterOfFill++;
+                }
+            }
+
+            filedLines = filedLines + counterOfFill;
+
+            return filedLines;
+
+        }
 
 
         this.removeFilledRows = function () {
@@ -443,7 +471,45 @@ window.onload = function () {
             this.saveAndRender();
         };
 
+        
+        this.showScore =function () {
 
+            $("#score").show();
+            $("#numberOfScore").show();
+
+        };
+
+        this.showLines =function () {
+
+            $("#Lines").show();
+            $("#numberOfLines").show();
+
+        };
+
+        this.showLevel =function () {
+
+            $("#level").show();
+            $("#numberOfLevel").show();
+
+        };
+
+        this.claculateInfo = function () {
+
+            var filedRow = this.gameField.countFilledRows();
+
+            $("#numberOfLevel").text(1);
+            $("#numberOfLines").text(filedRow);
+            $("#numberOfScore").text(filedRow*10);
+
+
+        };
+
+
+        this.showInformation = function () {
+            this.showLevel();
+            this.showLines();
+            this.showScore();
+        }
     }
 
 
@@ -453,6 +519,8 @@ window.onload = function () {
         var divClass = $('.center-div');
         var paperNextFigure  = new Raphael(divClass.get(0),315, 175);
         $(paperNextFigure.canvas).attr('id', 'preview');
+
+
 
 
 
@@ -474,6 +542,7 @@ window.onload = function () {
 
         var paper  = new Raphael(divClass.get(0),350, 700);
         $(paper.canvas).attr('id', 'field');
+
 
 
         function drawLines() {
@@ -504,6 +573,9 @@ window.onload = function () {
 
 
             paper.clear();
+
+
+
 
             var heightOffset = 140;
             var withAndHeightQuad = 35;
@@ -675,6 +747,7 @@ window.onload = function () {
 
         engine.setField(gameField);
         engine.setRenderer(renderer);
+        engine.showInformation();
 
 
         var  figures = [
@@ -699,6 +772,7 @@ window.onload = function () {
 
         function gameCycle() {
 
+
             if(makeNewFigure){
 
                 currentFigure = new Figure(nextFigure);
@@ -720,6 +794,7 @@ window.onload = function () {
 
                 var addFigure = currentFigure.getCurrentCoordinates();
                 gameField.addFigureToField(addFigure);
+                engine.claculateInfo();
                 gameField.removeFilledRows();
 
                 if(engine.gameIsOver()){
