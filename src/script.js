@@ -149,7 +149,7 @@ window.onload = function () {
                 for (var j = 0; j < arrField[0].length; j++) {
 
                     if(arrField[i][j] == 0){
-                        isRowFiled = false
+                        isRowFiled = false;
                         break
                     }else{
                         isRowFiled = true
@@ -165,7 +165,7 @@ window.onload = function () {
 
             return filedLines;
 
-        }
+        };
 
 
         this.removeFilledRows = function () {

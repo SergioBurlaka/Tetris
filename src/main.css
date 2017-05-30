@@ -226,3 +226,112 @@ path{
 
 #OkButton:hover .fil0OkButton{fill: #5c8391;}
 #OkButton:hover .str0OkButton{stroke: #5c8391;}
+
+
+
+        .str0Score{stroke:#000000;stroke-width:1.99962}
+.fil0Score {fill:#ffffff}
+
+#score {
+    display: none;
+    background-color: rgba(93, 142, 236, 0);
+    border: none;
+    z-index: 12;
+
+
+    position: absolute;
+    bottom: 215px;
+    left: 401px;
+
+    width:119px;
+    height:53px;
+}
+
+
+
+#score .str0Score{
+    stroke: #5f8491;
+    stroke-opacity: 0.9;
+
+}
+
+
+.numbers{
+    /*display: none;*/
+    font-family:  squada-one, serif ;
+    font-size: 46px;
+    font-weight: 100;
+    color: #5f8491;
+
+
+}
+
+
+.str0Level {stroke:#2B2A29;stroke-width:1.99963}
+.fil0Level {fill: #ffffff}
+#level{
+    display: none;
+    background-color: rgba(93, 142, 236, 0);
+    border: none;
+    z-index: 12;
+
+
+    width: 109px;
+    height: 53px;
+    position: absolute;
+    bottom: 403px;
+    left: 391px;
+
+}
+
+#level .str0Level{
+    stroke: #5f8491;
+    stroke-opacity: 0.9;
+
+}
+
+.str0Lines {stroke:#2B2A29;stroke-width:1.99963}
+.fil0Lines {fill:#ffffff}
+#Lines{
+    display: none;
+    background-color: rgba(93, 142, 236, 0);
+    border: none;
+    z-index: 12;
+
+
+    width: 98px;
+    height: 56px;
+    position: absolute;
+    bottom: 307px;
+    left: 399px;
+}
+
+
+#Lines .str0Lines{
+    stroke: #5f8491;
+    stroke-opacity: 0.9;
+
+}
+
+
+#numberOfLevel{
+    display: none;
+    position: absolute;
+    bottom: 358px;
+    right: 24px;
+}
+
+#numberOfScore{
+    display: none;
+    position: absolute;
+    bottom: 171px;
+    right: 24px;
+}
+
+
+#numberOfLines{
+    display: none;
+    position: absolute;
+    bottom: 266px;
+    right: 24px;
+}
