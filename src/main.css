@@ -79,14 +79,14 @@ path{
 }
 
 .logo {
-    width: 350px;
+    width: 329px;
     height: 175px;
     background-color: rgba(93, 142, 236, 0);
     border: none;
     position: absolute;
 
-    bottom: -19px ;
-    right: 6px;
+    bottom: -24px;
+    right: 16px;
     z-index: 10;
 
 }
@@ -123,7 +123,7 @@ path{
 }
 #preview {
     background-color: rgb(233, 247, 254);
-    margin: 1px -12px -204px 29px;
+    margin: 1px -12px -171px 29px;
     z-index: 10;
 
 }
@@ -159,6 +159,12 @@ path{
     fill: #becfe9;
     fill-opacity: 0.7;
 }
+
+#gameOverScreen{
+    fill: #becfe9;
+    fill-opacity: 0.7;
+}
+
 
 
 
@@ -240,11 +246,11 @@ path{
 
 
     position: absolute;
-    bottom: 215px;
+    bottom: 274px;
     left: 401px;
 
+    height:50px;
     width:119px;
-    height:53px;
 }
 
 
@@ -277,9 +283,9 @@ path{
 
 
     width: 109px;
-    height: 53px;
+    height: 50px;
     position: absolute;
-    bottom: 403px;
+    bottom: 452px;
     left: 391px;
 
 }
@@ -300,9 +306,9 @@ path{
 
 
     width: 98px;
-    height: 56px;
+    height: 50px;
     position: absolute;
-    bottom: 307px;
+    bottom: 362px;
     left: 399px;
 }
 
@@ -317,14 +323,7 @@ path{
 #numberOfLevel{
     display: none;
     position: absolute;
-    bottom: 358px;
-    right: 24px;
-}
-
-#numberOfScore{
-    display: none;
-    position: absolute;
-    bottom: 171px;
+    bottom: 403px;
     right: 24px;
 }
 
@@ -332,6 +331,64 @@ path{
 #numberOfLines{
     display: none;
     position: absolute;
-    bottom: 266px;
+    bottom: 310px;
     right: 24px;
 }
+
+#numberOfScore{
+    display: none;
+    position: absolute;
+    bottom: 219px;
+    right: 24px;
+}
+
+.str1quit {stroke:#7889a7;stroke-width:1.0004}
+.str0quit {stroke:#7889a7;stroke-width:2.36223}
+.fil0quit {fill: #7889a7
+}
+#quit rect{fill-opacity: 1; fill: #7889a7;}
+
+#quit{
+    display: none;
+    background-color: rgba(93, 142, 236, 0);
+    border: none;
+
+    width:114px;
+    height:54px;
+    fill-rule:evenodd;
+
+    position: absolute;
+    bottom: 168px;
+    right: 219px;
+}
+
+#quit:hover .fil0quit{fill: #5c8391;}
+#quit:hover .fil1quit{fill: #5c8391;}
+#quit:hover .str0quit{stroke: #5c8391;}
+
+
+.str2Pause {stroke:#7889a7;stroke-width:0.199606}
+.str0Pause {stroke:#7889a7;stroke-width:0.499606}
+.str1Pause {stroke:#7889a7;stroke-width:1.00039}
+.fil0Pause {fill:#7889a7}
+
+#pause{
+    display: none;
+    background-color: rgba(93, 142, 236, 0);
+    border: none;
+    width:147px;
+    height:49px;
+    fill-rule:evenodd;
+    position: absolute;
+    bottom: 168px;
+    right: 22px;
+
+}
+
+#pause rect{fill-opacity: 1; fill: #7889a7;}
+
+#pause:hover .str2Pause {stroke:#5c8391;stroke-width:0.199606}
+#pause:hover .str0Pause {stroke:#5c8391;stroke-width:0.499606}
+#pause:hover .str1Pause {stroke:#5c8391;stroke-width:1.00039}
+#pause:hover .fil0Pause {fill:#5c8391}
+

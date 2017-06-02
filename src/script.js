@@ -345,6 +345,9 @@ window.onload = function () {
 
     function TetrisEngine() {
 
+        var togglePause = true;
+        this.toggleAcceleration = true;
+
         this.currentFigure = {};
 
         this.gameField = {};
@@ -373,17 +376,52 @@ window.onload = function () {
 
         this.moveDownNormalSpeed = function () {
 
+            console.log('moveDownNormalSpeed');
+            this.toggleAcceleration  = true;
+
+            console.log('this.toggleAcceleration togglePause');
+            console.log(this.toggleAcceleration,togglePause);
+
             this.interruptInterval();
 
-            var speed = 250;
-            setIntervalID = setInterval( moveDownCycle, speed);
+            if (this.toggleAcceleration && togglePause){
 
+                var speed = 250;
+                setIntervalID = setInterval( moveDownCycle, speed);
+            }
         };
 
+
+
         this.moveDownHighSpeed = function () {
-            this.interruptInterval();
-            var speed = 100;
-            setIntervalID = setInterval( moveDownCycle, speed);
+
+            if(this.toggleAcceleration && togglePause){
+                console.log('moveDownHighSpeed');
+
+                this.interruptInterval();
+                var speed = 100;
+                setIntervalID = setInterval( moveDownCycle, speed);
+                this.toggleAcceleration  = false;
+            }
+        };
+
+
+
+        this.pauseEvent = function (){
+
+            if(togglePause){
+                this.createScreenForPause();
+                this.interruptInterval();
+                togglePause = false;
+            }else{
+                this.clearScreenForPause();
+                this.moveDownNormalSpeed();
+                togglePause = true;
+
+            }
+
+            console.log('togglePause');
+            console.log(togglePause);
 
 
         };
@@ -456,13 +494,27 @@ window.onload = function () {
         this.createScreenForGameOver = function () {
             $( "#gameOver" ).show();
             $( "#OkButton" ).show();
-            this.renderer.createPauseScreen();
+            this.renderer.createGameOverScreen();
         };
 
         this.clearScreenForGameOver = function () {
             $( "#gameOver" ).hide();
             $( "#OkButton" ).hide();
-            this.renderer.deletePauseScreen()
+            // this.renderer.deleteGameOverScreen();
+            $("#numberOfLevel").text(0).hide();
+            $("#numberOfLines").text(0).hide();
+            $("#numberOfScore").text(0).hide();
+
+            $("#score").hide();
+            $("#Lines").hide();
+            $("#level").hide();
+
+            $( "#quit" ).hide();
+            $( "#pause" ).hide();
+            $( "#paused" ).hide();
+
+
+
         };
 
         this.saveAndRender = function () {
@@ -479,18 +531,27 @@ window.onload = function () {
 
 
         this.moveFigureLeft = function () {
-            this.currentFigure.moveLeft();
-            this.saveAndRender();
+            if(togglePause){
+                this.currentFigure.moveLeft();
+                this.saveAndRender();
+            }
+
         };
 
         this.moveFigureRight = function () {
-            this.currentFigure.moveRight();
-            this.saveAndRender();
+            if(togglePause){
+                this.currentFigure.moveRight();
+                this.saveAndRender();
+            }
+
         };
 
         this.figureRotate = function () {
-            this.currentFigure.rotate();
-            this.saveAndRender();
+            if(togglePause){
+                this.currentFigure.rotate();
+                this.saveAndRender();
+            }
+
         };
 
 
@@ -515,6 +576,13 @@ window.onload = function () {
 
         };
 
+        this.showPuseAndQuit = function () {
+
+            $( "#logo" ).removeClass( "logoStartScreen" ).addClass( "logo" );
+            $( "#quit" ).show();
+            $( "#pause" ).show();
+        };
+
         this.claculateInfo = function () {
 
             var filedRow = this.gameField.countFilledRows();
@@ -531,17 +599,19 @@ window.onload = function () {
             this.showLevel();
             this.showLines();
             this.showScore();
-        }
+            this.showPuseAndQuit();
+        };
+
     }
+
 
 
 
     function Renderer() {
 
         var divClass = $('.center-div');
-        var paperNextFigure  = new Raphael(divClass.get(0),315, 175);
+        var paperNextFigure  = new Raphael(divClass.get(0),315, 140);
         $(paperNextFigure.canvas).attr('id', 'preview');
-
 
 
         this.drawNextFigure = function (figure) {
@@ -551,7 +621,7 @@ window.onload = function () {
             for (var k = 0; k < figure.relativeCoordinates.length; k++) {
 
                 var figureXCoordinate = withAndHeightQuad*(figure.relativeCoordinates[k].x+4);
-                var figureYCoordinate = withAndHeightQuad*(figure.relativeCoordinates[k].y+3);
+                var figureYCoordinate = withAndHeightQuad*(figure.relativeCoordinates[k].y+2);
 
                 paperNextFigure.rect(figureXCoordinate, figureYCoordinate, 35, 35 );
 
@@ -566,6 +636,7 @@ window.onload = function () {
 
 
         var pauseScreen;
+        var gameOverScreen;
 
         this.createPauseScreen = function () {
              pauseScreen = paper.rect(0, 0, 350, 700 );
@@ -573,8 +644,18 @@ window.onload = function () {
 
         };
 
+        this.createGameOverScreen = function () {
+            gameOverScreen = paper.rect(0, 0, 350, 700 );
+            gameOverScreen.node.setAttribute("id","gameOverScreen");
+
+        };
+
         this.deletePauseScreen = function () {
             pauseScreen.remove();
+        };
+
+        this.deleteGameOverScreen = function () {
+            gameOverScreen.remove();
         };
 
 
@@ -642,52 +723,53 @@ window.onload = function () {
     }
 
 
+    function keyHandler(currentEngine) {
 
-    function keyHandler(currentFigure) {
+        $('#pause').on('click', function () {
+            currentEngine.pauseEvent();
+            currentEngine.moveDownNormalSpeed();
 
-        var togglePause = true;
-        var toggleAcceleration = true;
+        });
+
+
+        $('#quit').on('click', function () {
+
+            currentEngine.interruptInterval();
+
+            $(document).off("keydown");
+            $(document).off("keyup");
+            // $('#quit').off();
+            // $('#pause').off();
+
+
+            restartGame(currentEngine);
+
+        });
+
 
         $(document).keydown(function(e) {
             switch (e.which) {
 
                 case 37 :
-                    if(togglePause){
-                        currentFigure.moveFigureLeft();
-                    }
+                    currentEngine.moveFigureLeft();
                     break;
 
                 case 39 :
-                    if(togglePause){
-                        currentFigure.moveFigureRight();
-                    }
+                    currentEngine.moveFigureRight();
                     break;
 
                 case 32 :
-                    if(togglePause){
-                        currentFigure.figureRotate();
-                    }
+                    currentEngine.figureRotate();
                     break;
 
                 case 40:
-                    if(toggleAcceleration){
-                        currentFigure.moveDownHighSpeed();
-                        toggleAcceleration  = false;
-                    }
+                    currentEngine.moveDownHighSpeed();
                     break;
 
                 case 80:
-                    if(togglePause){
+                    currentEngine.pauseEvent();
+                    currentEngine.moveDownNormalSpeed();
 
-
-                        currentFigure.createScreenForPause();
-                        currentFigure.interruptInterval();
-                        togglePause = false;
-                    }else{
-                        currentFigure.clearScreenForPause();
-                        currentFigure.moveDownNormalSpeed();
-                        togglePause = true;
-                    }
                     break;
             }
         });
@@ -697,10 +779,7 @@ window.onload = function () {
             switch (e.which) {
 
                 case 40:
-                    if(!toggleAcceleration){
-                        currentFigure.moveDownNormalSpeed();
-                        toggleAcceleration  = true;
-                    }
+                    currentEngine.moveDownNormalSpeed();
                     break;
             }
         });
@@ -743,7 +822,6 @@ window.onload = function () {
             var majorScreen = new Gamestart();
             majorScreen.drawInclinedLines();
 
-
         }
 
 
@@ -764,7 +842,6 @@ window.onload = function () {
 
     function initGame(){
 
-        $( "#logo" ).removeClass( "logoStartScreen" ).addClass( "logo" );
 
         var makeNewFigure = true;
         var currentFigure;
@@ -799,10 +876,16 @@ window.onload = function () {
         engine.setMoveDownCycle(gameCycle);
         engine.moveDownNormalSpeed();
 
+
+
         keyHandler(engine);
 
 
+
+
         function gameCycle() {
+
+            console.log(' game running ');
 
             if(makeNewFigure){
 
@@ -828,21 +911,21 @@ window.onload = function () {
                 engine.claculateInfo();
                 gameField.removeFilledRows();
 
-                if(engine.gameIsOver()){
+
+                if( engine.gameIsOver()){
                     engine.interruptInterval();
 
                     $(document).off("keydown");
                     $(document).off("keyup");
 
-                    console.log(' game over ');
+                    console.log(' game Cycle over ');
+
                     engine.createScreenForGameOver();
 
+
                     $('#OkButton').on('click', function () {
-
                         restartGame(engine);
-
                     });
-
 
 
                 }
@@ -850,17 +933,25 @@ window.onload = function () {
         }
     }
 
+
     function restartGame(context) {
-        context.clearScreenForGameOver();
+
+        $('#quit').off();
+        $('#pause').off();
 
         $( "#field" ).remove();
         $( "#preview" ).remove();
         $( "#svgMain" ).remove();
         $('#play').show();
-        $( "#logo" ).removeClass( "logo" ).addClass( "logoStartScreen" );
+        $( "#logo" ).removeClass("logo").addClass( "logoStartScreen" );
+        context.clearScreenForGameOver();
+
         startScreen();
 
+
     }
+
+    console.log(' game over ');
 
 
 
