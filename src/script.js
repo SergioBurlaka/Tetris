@@ -104,7 +104,9 @@ window.onload = function () {
 
 
         var  arrField = [];
-        var filedLines = 0;
+        this.filedLines = 0;
+
+
 
         function initialaseArrField(arr) {
 
@@ -161,9 +163,9 @@ window.onload = function () {
                 }
             }
 
-            filedLines = filedLines + counterOfFill;
+            this.filedLines = this.filedLines + counterOfFill;
 
-            return filedLines;
+            return this.filedLines;
 
         };
 
@@ -359,9 +361,12 @@ window.onload = function () {
         this.setRenderer = function (newRenderer) {
             this.renderer = newRenderer;
         };
+        
+        
 
         this.setFigure = function (newFigure) {
             this.currentFigure = newFigure;
+            this.incCountBetweenFigure();
         };
 
         this.setField = function (newField) {
@@ -374,21 +379,18 @@ window.onload = function () {
             moveDownCycle = callBack;
         };
 
+
+        var speed = 250;
+
         this.moveDownNormalSpeed = function () {
 
-            console.log('moveDownNormalSpeed');
             this.toggleAcceleration  = true;
-
-            console.log('this.toggleAcceleration togglePause');
-            console.log(this.toggleAcceleration,togglePause);
-
             this.interruptInterval();
 
             if (this.toggleAcceleration && togglePause){
-
-                var speed = 250;
                 setIntervalID = setInterval( moveDownCycle, speed);
             }
+
         };
 
 
@@ -396,8 +398,6 @@ window.onload = function () {
         this.moveDownHighSpeed = function () {
 
             if(this.toggleAcceleration && togglePause){
-                console.log('moveDownHighSpeed');
-
                 this.interruptInterval();
                 var speed = 100;
                 setIntervalID = setInterval( moveDownCycle, speed);
@@ -419,10 +419,6 @@ window.onload = function () {
                 togglePause = true;
 
             }
-
-            console.log('togglePause');
-            console.log(togglePause);
-
 
         };
 
@@ -576,30 +572,99 @@ window.onload = function () {
 
         };
 
-        this.showPuseAndQuit = function () {
+        this.showPauseAndQuit = function () {
 
             $( "#logo" ).removeClass( "logoStartScreen" ).addClass( "logo" );
             $( "#quit" ).show();
             $( "#pause" ).show();
         };
 
-        this.claculateInfo = function () {
+        this.calaculateInfo = function () {
 
             var filedRow = this.gameField.countFilledRows();
 
-            $("#numberOfLevel").text(1);
-            $("#numberOfLines").text(filedRow);
-            $("#numberOfScore").text(filedRow*10);
+            console.log('filedRow');
+            console.log(filedRow);
 
+            var numberOflines = $("#numberOfLines");
+
+            var beforeChanges = numberOflines.text();
+            beforeChanges = beforeChanges*1;
+
+            if(beforeChanges !== filedRow){
+                var multyplaer = beforeChanges - filedRow;
+                if(multyplaer < 0 ){multyplaer = multyplaer*(-1)}
+                this.calculateScore(multyplaer);
+                this.resetCountBetweenFigure();
+
+
+            }
+
+            numberOflines.text(filedRow);
 
         };
+
+
+
+
+        var fuigureCounter = 1;
+
+        this.incCountBetweenFigure = function () {
+            fuigureCounter++;
+        };
+        
+        this.getCountBetweenFigure = function () {
+            return fuigureCounter;
+        };
+
+        this.resetCountBetweenFigure = function () {
+            fuigureCounter = 1;
+        };
+
+        this.level = 0;
+        this.score = 0;
+
+        this.calculateScore = function (multiplier) {
+
+
+            var counterBetweenFigure = this.getCountBetweenFigure();
+
+            var scoreCalculate = (multiplier)*480/counterBetweenFigure;
+
+            this.score = this.score + Math.floor(scoreCalculate);
+
+            $("#numberOfScore").text(this.score);
+
+        };
+
+        this.checkLevel = function () {
+
+            var filedRow = this.score;
+
+            if(Math.floor(filedRow/1380) > this.level &&  this.level < 10){
+                this.levelUp();
+                this.speedUp();
+
+            }
+        };
+
+        this.speedUp = function () {
+            speed = speed - 15;
+        };
+
+
+        this.levelUp = function () {
+            this.level = this.level+1;
+            $("#numberOfLevel").text(Math.floor(this.level));
+        };
+
 
 
         this.showInformation = function () {
             this.showLevel();
             this.showLines();
             this.showScore();
-            this.showPuseAndQuit();
+            this.showPauseAndQuit();
         };
 
     }
@@ -654,9 +719,6 @@ window.onload = function () {
             pauseScreen.remove();
         };
 
-        this.deleteGameOverScreen = function () {
-            gameOverScreen.remove();
-        };
 
 
         function drawLines() {
@@ -908,7 +970,10 @@ window.onload = function () {
 
                 var addFigure = currentFigure.getCurrentCoordinates();
                 gameField.addFigureToField(addFigure);
-                engine.claculateInfo();
+
+                engine.calaculateInfo();
+                engine.checkLevel();
+
                 gameField.removeFilledRows();
 
 
@@ -951,7 +1016,6 @@ window.onload = function () {
 
     }
 
-    console.log(' game over ');
 
 
 
