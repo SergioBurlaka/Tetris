@@ -587,8 +587,6 @@ window.onload = function () {
 
             var filedRow = this.gameField.countFilledRows();
 
-            console.log('filedRow');
-            console.log(filedRow);
 
             var numberOflines = $("#numberOfLines");
 
