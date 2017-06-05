@@ -128,9 +128,9 @@ window.onload = function () {
         };
 
 
+       
 
         this.addFigureToField = function (figure) {
-
 
             for (var i = 0; i < figure.length; i++) {
 
@@ -141,6 +141,8 @@ window.onload = function () {
             }
 
         };
+
+
 
 
         this.countFilledRows = function () {
@@ -174,8 +176,6 @@ window.onload = function () {
 
             var rowsThatFill = [];
             var counterOfFill = 0;
-            var clearRow = [0,0,0,0,0,0,0,0,0,0];
-
 
             for (var i = 0; i < arrField.length; i++) {
                 for (var j = 0; j < arrField[0].length; j++) {
@@ -190,12 +190,13 @@ window.onload = function () {
 
 
             for(var l = 0; l < arrField.length-counterOfFill; l++){
-                rowsThatFill.unshift(clearRow);
+                rowsThatFill.unshift([0,0,0,0,0,0,0,0,0,0]);
             }
 
             arrField = rowsThatFill;
 
         };
+
 
 
     }
@@ -395,6 +396,7 @@ window.onload = function () {
 
 
 
+
         this.moveDownHighSpeed = function () {
 
             if(this.toggleAcceleration && togglePause){
@@ -526,6 +528,8 @@ window.onload = function () {
         };
 
 
+
+
         this.moveFigureLeft = function () {
             if(togglePause){
                 this.currentFigure.moveLeft();
@@ -596,7 +600,6 @@ window.onload = function () {
                 if(multyplaer < 0 ){multyplaer = multyplaer*(-1)}
                 this.calculateScore(multyplaer);
                 this.resetCountBetweenFigure();
-
 
             }
 
@@ -969,6 +972,7 @@ window.onload = function () {
                 makeNewFigure = true;
 
                 var addFigure = currentFigure.getCurrentCoordinates();
+
                 gameField.addFigureToField(addFigure);
 
                 engine.calaculateInfo();
@@ -983,7 +987,6 @@ window.onload = function () {
                     $(document).off("keydown");
                     $(document).off("keyup");
 
-                    console.log(' game Cycle over ');
 
                     engine.createScreenForGameOver();
 
