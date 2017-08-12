@@ -10,6 +10,7 @@ space - rotate figure;
 left arrow - move left;
 right arrow - move right;
 down arrow - accelerated move down;
+p -pause;
 
 
 ![Alt text](http://dl4.joxi.net/drive/2017/08/12/0021/0128/1405056/56/f3e9e4c6e0.jpg)
